@@ -1,0 +1,72 @@
+{% extends "BlogGeneralBundle::layoutAdmin.html.twig" %}
+
+{% block title %}Affiche un article{% endblock %}
+
+{% block body %}
+    <h1>Affichage de la liste de tous les articles</h1>
+    <div class="count">
+        <p>Total d'articles : {{ pagination.getTotalItemCount }}</p>
+    </div>
+    <br>
+    <a href="{{ path('admin_add_article') }}" class="btn btn-primary">Ajouter un article</a>
+    <br>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>{{ knp_pagination_sortable(pagination, 'Id', 'article.id') }}</th>
+            <th{% if pagination.isSorted('article.title') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Title', 'article.title') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Création', 'article.dateCreate') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Mise à jour', 'article.dateUpdate') }}</th>
+            <th>Commentaires</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for article in pagination %}
+
+            {% set noValidCount = 0 %}
+            {% set validCount = 0 %}
+            <tr {% if loop.index is odd %}class="color"{% endif %}>
+
+                {% for comment in article.comments %}
+                    {% if comment.published is even %}
+                        {% set noValidCount = noValidCount + 1 %}
+                    {% elseif comment.published is odd %}
+                        {% set validCount = validCount + 1 %}
+                    {% endif %}
+                {% endfor %}
+
+                <td><a href="{{ path('admin_view_article', {'id': article.id}) }}">{{ article.id }}</a></td>
+                <td><a href="{{ path('admin_view_article', {'id': article.id}) }}">{{ article.title }}</a></td>
+                <td>{{ article.dateCreate|date('d/m/Y') }}</td>
+                <td>{{ article.dateUpdate is empty ? "" : article.dateUpdate|date("d/m/Y") }}</td>
+                <td>
+                    <span class="label label-success badge-success"><i class="fa fa-check">&nbsp;&nbsp;{{ validCount }}</i></span>
+                    {% if noValidCount > 0 %}
+                        <a href="{{ path('admin_view_article', {'id': article.id}) }}">
+                                <span class="label label-warning badge-warning">
+                                    <i class="fa fa-ban">&nbsp;&nbsp;{{ noValidCount }}</i>
+                                </span>
+                        </a>
+                    {% endif %}
+                </td>
+                <td>
+                    <p>
+                        <a class="btn btn-primary btn-xs boutonedit" href="{{ path('admin_edit_article', {'id': article.id}) }}">Editer</a>
+                        <a class="btn btn-primary btn-xs boutondel" href="{{ path('admin_del_article', {'id': article.id}) }}">Supprimer</a>
+                        <a class="btn btn-primary btn-xs boutonedit" href="{{ path('admin_view_article', {'id': article.id}) }}">Lire</a>
+                    </p>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {# display navigation #}
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+{% endblock %}
+
+
+

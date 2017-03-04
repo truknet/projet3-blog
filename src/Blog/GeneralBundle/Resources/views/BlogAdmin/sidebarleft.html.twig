@@ -1,0 +1,24 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Menu
+    </div>
+    <div class="panel-body">
+        <ul class="nav nav-pills nav-stacked">
+            <li><a href="{{ path('homepage') }}"><i class="fa fa-home"></i> Retour au site <span class="sr-only">(current)</span></a></li>
+            <li><hr></li>
+            <li><a href="{{ path('admin_view_list_all_article') }}">Article</a></li>
+            <li><a href="{{ path('admin_users') }}">Utilisateurs</a></li>
+            <li><a href="{{ path('admin_configuration') }}">Configuration</a></li>
+            <li><hr></li>
+            <li>
+                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                    <a href="{{ path('fos_user_security_logout') }}">
+                        {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                    </a>
+                {% else %}
+                    <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+                {% endif %}
+            </li>
+        </ul>
+    </div>
+</div>

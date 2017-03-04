@@ -1,0 +1,50 @@
+{% extends "BlogGeneralBundle::layoutAdmin.html.twig" %}
+
+{% block title %}Administration{% endblock %}
+
+
+{% block body %}
+    <h1 class="page-header">Dashboard</h1>
+
+    <div class="alert alert-{{ message['comment'][0] }}" role="alert">
+        {{ message['comment'][1] }}
+        <button class="btn btn-primary boutonvalid btn-xs" type="button" data-toggle="collapse" data-target="#commentaire" aria-expanded="false" aria-controls="collapseExample">
+            Voir
+        </button>
+    </div>
+    <div class="collapse" id="commentaire">
+        <div class="comment1">
+            {% for comment in comments %}
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{ comment.id }} - {{ comment.title }}</h3>
+                    </div>
+                    <div class="panel-body">
+                        {{ comment.content }}
+                        <hr>
+                        Auteur : {{ comment.author }}
+                        - Date de création : {{ comment.dateCreate|date('d/m/Y') }}
+                        {{ comment.dateUpdate is empty ? "" : ' - Mise à jour : ' ~ comment.dateUpdate|date("d/m/Y") }}
+                        <a class="boutonedit btn btn-primary btn-xs" href="{{ path('admin_edit_comment', {'id': comment.id}) }}">Editer </a>
+                        <a class="boutondel btn btn-primary btn-xs" href="{{ path('admin_del_comment', {'id': comment.id}) }}">Supprimer </a>
+                        <a class="boutonvalid btn btn-primary btn-xs" href="{{ path('admin_valid_comment', {'id': comment.id}) }}">Valider </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+
+    <div class="alert alert-{{ message['signal'][0] }}" role="alert">
+        {{ message['signal'][1] }}
+        <button class="btn btn-primary boutonvalid btn-xs" type="button" data-toggle="collapse" data-target="#signalement" aria-expanded="false" aria-controls="collapseExample">
+            Voir
+        </button>
+    </div>
+    <div class="collapse" id="signalement">
+
+    </div>
+{% endblock %}
+
+

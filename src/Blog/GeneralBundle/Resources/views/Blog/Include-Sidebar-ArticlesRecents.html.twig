@@ -1,0 +1,14 @@
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Les articles récents</h3>
+            </div>
+            <div class="panel-body">
+                <ul>
+                    {% for article in listArticlesForSidebar %}
+                        <li><a href="{{ path('view_article', {'id': article.id}) }}">{{ article.title }}</a></li>
+                    {% endfor %}
+                </ul>
+                <hr>
+                <a href="{{ path('view_list_all_article') }}"><i class="fa fa-list"></i>&nbsp;&nbsp;Voir la liste complete</a>
+            </div>
+        </div>

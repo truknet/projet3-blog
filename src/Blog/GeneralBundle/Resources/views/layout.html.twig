@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% endblock %} - Mon blog</title>
+    <link rel="stylesheet" href="{{ asset(''~ config.loadConfig.themeBlog ) }}" />
+    <link rel="stylesheet" href="{{ asset('css/font-awesome-4.7.0/css/font-awesome.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/blogcss.css') }}" />
+
+    {% block stylesheets %}{% endblock %}
+
+</head>
+<body>
+<div class="container">
+    {% block navbar %}{{ include("BlogGeneralBundle:Blog:navbar.html.twig") }}{% endblock %}
+    {# On affiche tous les messages flash #}
+    {% for key, messages in app.session.flashbag.all() %}
+        {% for message in messages %}
+            <div class="alert alert-{{ key }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+</div>
+
+
+{% block body %}{% endblock %}
+
+
+<footer class="footer">
+    <div class="container">
+        <p>&copy;2017 Projet 3 - Blog / <a href="{{ path('admin') }}">Administration</a></p>
+    </div>
+</footer>
+
+{% block javascript %}
+{% endblock %}
+
+<script src="https://code.jquery.com/jquery.min.js"></script>
+<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+</body>
+</html>

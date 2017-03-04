@@ -1,0 +1,76 @@
+body {
+    padding-top: 80px;
+}
+h1 {
+    font-size: 24px;
+    text-align: center;
+}
+
+.comment1 {
+    padding-left: 50px;
+}
+.comment2 {
+    padding-left: 100px;
+}
+.comment3 {
+    padding-left: 150px;
+}
+
+.boutoncomment {
+    margin-left: 5px;
+    float: right;
+}
+
+.boutonedit {
+    margin-left: 5px;
+    float: right;
+}
+
+.boutondel {
+    margin-left: 5px;
+    float: right;
+}
+
+.boutonvalid {
+    margin-left: 5px;
+    float: right;
+}
+
+.form-signin {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+}
+
+.count {
+    text-align: center;
+}
+.navigation {
+    text-align: center;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+}
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    /* height: 60px; */
+    background-color: rgba(0, 0, 0, 0.6);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+    font-size: small;
+    text-align: center;
+    padding-top: 5px;
+}
+
+
+

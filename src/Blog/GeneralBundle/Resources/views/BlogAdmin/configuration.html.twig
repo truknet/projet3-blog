@@ -1,0 +1,109 @@
+{% extends "BlogGeneralBundle::layoutAdmin.html.twig" %}
+
+{% block title %}Configuration{% endblock %}
+
+{% block body %}
+    <h1>Configuration du site</h1>
+    <br>
+    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+
+    {# Les erreurs générales du formulaire. #}
+    {{ form_errors(form) }}
+
+    {# Génération manuelle et éclatée : #}
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Le blog</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    {{ form_label(form.themeBlog, "Theme du Blog : ", {'label_attr': {'class': 'col-sm-5 control-label'}}) }}
+                    {{ form_errors(form.themeBlog) }}
+                    <div class="col-sm-7">
+                        {{ form_widget(form.themeBlog, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.nbArticlePerPageBlog, "Nombre d'article par page : ", {'label_attr': {'class': 'col-sm-5 control-label'}}) }}
+                    {{ form_errors(form.nbArticlePerPageBlog) }}
+                    <div class="col-sm-7">
+                        {{ form_widget(form.nbArticlePerPageBlog, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.nbArticlePerPageInListBlog, "Nombre d'articles à afficher par page en liste : ", {'label_attr': {'class': 'col-sm-5 control-label'}}) }}
+                    {{ form_errors(form.nbArticlePerPageInListBlog) }}
+                    <div class="col-sm-7">
+                        {{ form_widget(form.nbArticlePerPageInListBlog, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.nbArticleInSidebarArticleRecentBlog, "Nombre d'articles à afficher dans la sidebar \"Articles récents\" : ", {'label_attr': {'class': 'col-sm-5 control-label'}}) }}
+                    {{ form_errors(form.nbArticleInSidebarArticleRecentBlog) }}
+                    <div class="col-sm-7">
+                        {{ form_widget(form.nbArticleInSidebarArticleRecentBlog, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.nbLevelCommentBlog, "Nombre de niveau de commentaire : ", {'label_attr': {'class': 'col-sm-5 control-label'}}) }}
+                    {{ form_errors(form.nbLevelCommentBlog) }}
+                    <div class="col-sm-7">
+                        {{ form_widget(form.nbLevelCommentBlog, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.commentAutoPublished, "Publier automatiquement les nouveaux commentaires : ", {'label_attr': {'class': 'col-sm-5 control-label'}}) }}
+                    {{ form_errors(form.commentAutoPublished) }}
+                    <div class="col-sm-7">
+                        {{ form_widget(form.commentAutoPublished, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">L'administration</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    {{ form_label(form.themeAdmin, "Theme de l'administration : ", {'label_attr': {'class': 'col-sm-5 control-label'}}) }}
+                    {{ form_errors(form.themeAdmin) }}
+                    <div class="col-sm-7">
+                        {{ form_widget(form.themeAdmin, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.nbArticlePerPageAdmin, "Nombre d'article par page : ", {'label_attr': {'class': 'col-sm-5 control-label'}}) }}
+                    {{ form_errors(form.nbArticlePerPageAdmin) }}
+                    <div class="col-sm-7">
+                        {{ form_widget(form.nbArticlePerPageAdmin, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.nbArticlePerPageInListAdmin, "Nombre d'articles à afficher par page en liste : ", {'label_attr': {'class': 'col-sm-5 control-label'}}) }}
+                    {{ form_errors(form.nbArticlePerPageInListAdmin) }}
+                    <div class="col-sm-7">
+                        {{ form_widget(form.nbArticlePerPageInListAdmin, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {# Pour le bouton, pas de label ni d'erreur, on affiche juste le widget #}
+    {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+
+    {# Génération automatique des champs pas encore écrits.
+       Dans cet exemple, ce serait le champ CSRF (géré automatiquement par Symfony !)
+       et tous les champs cachés (type « hidden »). #}
+    {{ form_rest(form) }}
+
+    {# Fermeture de la balise <form> du formulaire HTML #}
+    {{ form_end(form) }}
+
+
+
+{% endblock %}
+
+
+

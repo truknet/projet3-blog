@@ -1,0 +1,12 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_host: localhost
+    database_port: null
+    database_name: tutoocr
+    database_user: root
+    database_password: null
+    mailer_transport: mail
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    secret: 4002993a26cd97ff9d702d9a694c4e079e05ba60

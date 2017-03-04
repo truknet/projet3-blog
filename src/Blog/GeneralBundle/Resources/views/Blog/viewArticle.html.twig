@@ -1,0 +1,29 @@
+{% extends "BlogGeneralBundle::layout.html.twig" %}
+
+{% block title %}Affiche un article{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-9 block-main">
+
+
+                {{ include("BlogGeneralBundle:Blog:Include-Article.html.twig") }}
+                {{ include("BlogGeneralBundle:Blog:Include-Comment-Form.html.twig") }}
+                {{ include("BlogGeneralBundle:Blog:Include-Comment.html.twig") }}
+
+
+
+
+                {# Affichage d'un bouton 'Retour à la liste' #}
+                <a href="{{ path('view_list_all_article') }}" class="btn btn-default">Retour à liste</a>
+            </div>
+            {# Affichage du panel des Articles recents dans la sidebar de droite #}
+            <div class="col-sm-3">
+                {{ include("BlogGeneralBundle:Blog:Include-Sidebar-ArticlesRecents.html.twig") }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

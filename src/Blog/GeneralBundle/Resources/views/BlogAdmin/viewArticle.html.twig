@@ -1,0 +1,60 @@
+{% extends "BlogGeneralBundle::layoutAdmin.html.twig" %}
+
+{% block title %}Affiche un article{% endblock %}
+
+{% block body %}
+
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{ article.id }} - {{ article.title }}</h3>
+        </div>
+        <div class="panel-body">
+            {{ article.content|raw }}
+            <hr>
+            Auteur : {{ article.author }}
+            - Date de création : {{ article.dateCreate|date('d/m/Y') }}
+            {{ article.dateUpdate is empty ? "" : ' - Mise à jour : ' ~ article.dateUpdate|date("d/m/Y") }}
+            <a class="boutonedit btn btn-primary btn-xs" href="{{ path('admin_edit_article', {'id': article.id}) }}">Editer </a>
+            <a class="boutondel btn btn-primary btn-xs" href="{{ path('admin_del_article', {'id': article.id}) }}">Supprimer </a>
+        </div>
+    </div>
+
+    <div class="comment1">
+        {% for comment in article.comments %}
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        {{ comment.id }} - {{ comment.title }}
+                        {% if comment.published == false %}
+                            <a class="boutonvalid btn btn-warning btn-xs" href="{{ path('admin_valid_comment', {'id': comment.id}) }}">En attente de validation</a>
+                        {% else %}
+                            <a class="boutonvalid btn btn-success btn-xs" href="#">Validé</a>
+                        {% endif %}
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    {{ comment.content }}
+                    <hr>
+
+                    Auteur : {{ comment.author }}
+                    - Date de création : {{ comment.dateCreate|date('d/m/Y') }}
+                    {{ comment.dateUpdate is empty ? "" : ' - Mise à jour : ' ~ comment.dateUpdate|date("d/m/Y") }}
+                    <button class="boutoncomment btn btn-primary btn-xs" type="button" data-toggle="collapse" data-target="#Comment1{{ comment.id }}" aria-expanded="false" aria-controls="Comment1{{ comment.id }}">
+                        Commenter
+                    </button>
+                    <a class="boutonedit btn btn-primary btn-xs" href="{{ path('admin_edit_comment', {'id': comment.id}) }}">Editer </a>
+                    <a class="boutondel btn btn-primary btn-xs" href="{{ path('admin_del_comment', {'id': comment.id}) }}">Supprimer </a>
+
+                </div>
+            </div>
+            <div class="collapse , comment2" id="Comment1{{ comment.id }}">
+                <div class="well">
+                    {{ comment.id }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <a href="{{ path('admin_view_list_all_article') }}" class="btn btn-default">Retour à liste</a>
+{% endblock %}
+

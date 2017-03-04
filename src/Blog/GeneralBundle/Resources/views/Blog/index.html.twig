@@ -1,0 +1,28 @@
+{% extends "BlogGeneralBundle::layout.html.twig" %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block stylesheets %}{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="row">
+            <div class="well">
+                <h1>Bienvenue sur mon blog</h1>
+                <p>
+                    Mon nom est Jean Forteroche, je suis acteur et écrivain. Je travaille actuellement sur mon prochain roman, "Billet simple pour l'Alaska".
+                    <br>
+                    J'ai désiré innover pour écrire ce roman en le publiant par épisode sur ce site.
+                    <br><br>
+                    Vous avez la possibilité de laisser vos commentaires, cela me donnera l'occasion de connaitre vos impression épisode par épisode.
+                    <br><br>
+                    Bonne lecture.
+                    <br><br>
+                </p>
+                <p><a class="btn btn-primary btn-sm" href="{{ path('view_all_article') }}" role="button"><i class="fa fa-folder-open-o" aria-hidden="true"></i>&nbsp;&nbsp; Voir les épisodes</a></p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

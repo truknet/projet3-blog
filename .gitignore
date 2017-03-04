@@ -1,0 +1,9 @@
+/build/
+/phpunit.xml
+/var/*
+/vendor/
+/A effacer
+/web/bundles/
+/.idea/
+composer.phar
+composer.lock
