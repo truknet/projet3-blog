@@ -1,7 +1,6 @@
 <?php
 namespace Blog\GeneralBundle\DataFixtures\ORM;
 
-use Blog\UserBundle\Entity\User;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;

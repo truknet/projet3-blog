@@ -4,12 +4,11 @@ namespace Blog\GeneralBundle\Controller;
 
 
 use Blog\GeneralBundle\Entity\Article;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Blog\GeneralBundle\Entity\Comment;
-use Blog\GeneralBundle\Entity\Configuration;
 use Blog\GeneralBundle\Form\CommentType;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class BlogController extends Controller

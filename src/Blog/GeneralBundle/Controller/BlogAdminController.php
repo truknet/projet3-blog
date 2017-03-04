@@ -10,9 +10,7 @@ use Blog\GeneralBundle\Entity\Comment;
 use Blog\GeneralBundle\Form\ArticleType;
 use Blog\GeneralBundle\Form\CommentType;
 use Blog\GeneralBundle\Form\ArticleEditType;
-use Blog\GeneralBundle\Entity\Configuration;
 use Blog\GeneralBundle\Form\ConfigurationType;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BlogAdminController extends Controller
 {
