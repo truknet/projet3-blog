@@ -60,20 +60,24 @@ class LoadArticleData extends AbstractFixture implements OrderedFixtureInterface
             $article->addComment($comment1);
             $article->addComment($comment2);
 
+
             // ajout d'un commentaire niveau 2 (apres commentaire derriere article)
-            $comment2->addChild($comment3);
+            $comment2->addChildren($comment3);
             $comment3->setParent($comment2);
 
             // Ajour d'un commentaire niveau 3
-            $comment3->addChild($comment4);
+            $comment3->addChildren($comment4);
             $comment4->setParent($comment3);
 
             // Ajour d'un commentaire niveau 4
-            $comment4->addChild($comment5);
+            $comment4->addChildren($comment5);
             $comment5->setParent($comment4);
 
             $comment1->setArticle($article);
             $comment2->setArticle($article);
+            $comment3->setArticle($article);
+            $comment4->setArticle($article);
+            $comment5->setArticle($article);
 
 
             $manager->persist($article);

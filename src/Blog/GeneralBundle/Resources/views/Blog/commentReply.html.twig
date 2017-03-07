@@ -1,0 +1,74 @@
+{% extends "BlogGeneralBundle::layout.html.twig" %}
+
+{% block title %}Répondre à un commentaire{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-9 block-main">
+
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{ comment.id }} - {{ comment.title }}</h3>
+                    </div>
+                    <div class="panel-body">
+                        {{ comment.content }}
+                        <hr>
+                        Auteur : {{ comment.author }}
+                        - Date de création : {{ comment.dateCreate|date('d/m/Y') }}
+                        {{ comment.dateUpdate is empty ? "" : ' - Mise à jour : ' ~ comment.dateUpdate|date("d/m/Y") }}
+                        <a href="{{ path('comment_reply', {'comment': comment.id}) }}" class="boutoncomment btn btn-primary btn-xs">
+                            <i class="fa fa-comments"></i> Répondre
+                        </a>
+                    </div>
+                </div>
+
+                <div class="well">
+                    <h5>Répondre à un commentaire</h5>
+
+                    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+
+                    {{ form_errors(form) }}
+
+                    {# Champ Title #}
+                    <div class="form-group">
+                        {{ form_label(form.title, "Titre", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+                        <div class="col-sm-10">
+                            {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.title) }}
+                        </div>
+                    </div>
+
+                    {# Champ Content #}
+                    <div class="form-group">
+                        {{ form_label(form.content, "Message", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+                        {{ form_errors(form.content) }}
+                        <div class="col-sm-10">
+                            {{ form_widget(form.content, {'attr': {'class': 'form-control tinymce'}}) }}
+                        </div>
+                    </div>
+
+                    {# Champ Autheur #}
+                    <div class="form-group">
+                        {{ form_label(form.author, "Auteur", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+                        {{ form_errors(form.author) }}
+                        <div class="col-sm-10">
+                            {{ form_widget(form.author, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+
+                    {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+                    {{ form_rest(form) }}
+                    {{ form_end(form) }}
+                </div>
+            </div>
+
+            {# Affichage du panel des Articles recents dans la sidebar de droite #}
+            <div class="col-sm-3">
+                {{ include("BlogGeneralBundle:Blog:Include-Sidebar-ArticlesRecents.html.twig") }}
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

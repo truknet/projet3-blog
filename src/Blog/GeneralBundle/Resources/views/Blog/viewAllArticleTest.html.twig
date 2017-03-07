@@ -1,0 +1,89 @@
+{% extends "BlogGeneralBundle::layout.html.twig" %}
+
+{% block title %}Affiche tous les articles avec commentaires{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9 block-main">
+
+            <h1>Affiche tous les articles avec commentaires (TEST)</h1>
+            <br>
+            {% for article in pagination %}
+                {# Affichage du panel Article #}
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{ article.title }}</h3>
+                    </div>
+                    <div class="panel-body">
+                        {{ article.content|raw }}
+                        <hr>
+                        Auteur : {{ article.author }}
+                        - Date de création : {{ article.dateCreate|date('d/m/Y') }}
+                        {{ article.dateUpdate is empty ? "" : ' - Mise à jour : ' ~ article.dateUpdate|date("d/m/Y") }}
+                        <button class="boutoncomment btn btn-primary btn-xs" type="button" data-toggle="collapse" data-target="#{{ article.id }}" aria-expanded="false" aria-controls="{{ article.id }}">
+                            <i class="fa fa-comments"></i> Commenter
+                        </button>
+                    </div>
+                </div>
+
+                <div class="collapse , comment1" id="{{ article.id }}">
+                    <div class="well">
+
+                        {{ form_start(form) }}
+                        {{ form_row(form.title) }}
+
+                        <ul class="comments">
+                            {# iterate over each existing tag and render its only field: name #}
+                            {% for comment in form.comments %}
+                                <li>{{ form_row(comment.title) }}</li>
+                                <li>{{ form_row(comment.content) }}</li>
+                                <li>{{ form_row(comment.author) }}</li>
+
+                            {% endfor %}
+                        </ul>
+
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+
+                {# Boucle d'Affichage des panels Commentaires #}
+                <div class="comment1">
+                    {% for comment in article.comments %}
+                        {% if comment.parent is null %}
+                            {% if comment.published == true %}
+
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">{{ comment.id }} - {{ comment.title }}</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        {{ comment.content }}
+                                        <hr>
+                                        Auteur : {{ comment.author }}
+                                        - Date de création : {{ comment.dateCreate|date('d/m/Y') }}
+                                        {{ comment.dateUpdate is empty ? "" : ' - Mise à jour : ' ~ comment.dateUpdate|date("d/m/Y") }}
+                                   {#     <a href="{{ path('comment_reply', {'comment': comment.id}) }}" class="boutoncomment btn btn-primary btn-xs">
+                                            <i class="fa fa-comments"></i> Répondre
+                                        </a>#}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            <div class="navigation">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        </div>
+
+        <div class="col-sm-3">
+            {{ include("BlogGeneralBundle:Blog:Include-Sidebar-Articlesrecents.html.twig") }}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+

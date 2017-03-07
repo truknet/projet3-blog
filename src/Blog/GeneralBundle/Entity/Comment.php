@@ -25,11 +25,11 @@ class Comment
      * One Comment has Many Comments.
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="parent")
      */
-    private $children;
+    private $childrens;
 
     /**
      * Many Comments have One Comment.
-     * @ORM\ManyToOne(targetEntity="Comment", inversedBy="children")
+     * @ORM\ManyToOne(targetEntity="Comment", inversedBy="childrens")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      */
     private $parent;
@@ -105,6 +105,7 @@ class Comment
         $this->setDateUpdate(new \Datetime());
     }
 
+    
     /**
      * Get id
      *
@@ -266,7 +267,7 @@ class Comment
      *
      * @return Comment
      */
-    public function setArticle(\Blog\GeneralBundle\Entity\Article $article)
+    public function setArticle(\Blog\GeneralBundle\Entity\Article $article = null)
     {
         $this->article = $article;
 
@@ -284,37 +285,37 @@ class Comment
     }
 
     /**
-     * Add child
+     * Add children
      *
-     * @param \Blog\GeneralBundle\Entity\Comment $child
+     * @param \Blog\GeneralBundle\Entity\Comment $children
      *
      * @return Comment
      */
-    public function addChild(\Blog\GeneralBundle\Entity\Comment $child)
+    public function addChildren(\Blog\GeneralBundle\Entity\Comment $children)
     {
-        $this->children[] = $child;
+        $this->childrens[] = $children;
 
         return $this;
     }
 
     /**
-     * Remove child
+     * Remove children
      *
-     * @param \Blog\GeneralBundle\Entity\Comment $child
+     * @param \Blog\GeneralBundle\Entity\Comment $children
      */
-    public function removeChild(\Blog\GeneralBundle\Entity\Comment $child)
+    public function removeChildren(\Blog\GeneralBundle\Entity\Comment $children)
     {
-        $this->children->removeElement($child);
+        $this->childrens->removeElement($children);
     }
 
     /**
-     * Get children
+     * Get childrens
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getChildren()
+    public function getChildrens()
     {
-        return $this->children;
+        return $this->childrens;
     }
 
     /**

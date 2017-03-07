@@ -3,6 +3,7 @@
 namespace Blog\GeneralBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Blog\GeneralBundle\Entity\Article;
@@ -17,6 +18,7 @@ class BlogAdminController extends Controller
     /**
      * @Route("/admin", name="admin")
      * @return \Symfony\Component\HttpFoundation\Response
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function indexAction()
     {
@@ -43,11 +45,13 @@ class BlogAdminController extends Controller
         ));
     }
 
+
     /**
      * @Route("/admin/validcomment/{id}", name="admin_valid_comment")
      * @param $comment
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function validCommentAction(Comment $comment, Request $request)
     {
@@ -63,6 +67,7 @@ class BlogAdminController extends Controller
      * @param $comment
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function delCommentAction(Comment $comment, Request $request)
     {
@@ -85,6 +90,7 @@ class BlogAdminController extends Controller
      * @param $comment
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function editCommentAction(Comment $comment, Request $request)
     {
@@ -105,6 +111,7 @@ class BlogAdminController extends Controller
      * @Route("/admin/viewarticle/{id}", name="admin_view_article")
      * @param $article
      * @return \Symfony\Component\HttpFoundation\Response
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function viewArticleAction(Article $article)
     {
@@ -117,6 +124,7 @@ class BlogAdminController extends Controller
      * @Route("/admin/addarticle", name="admin_add_article")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function addArticleAction(Request $request)
     {
@@ -141,6 +149,7 @@ class BlogAdminController extends Controller
      * @param $article
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function editArticleAction(Article $article, Request $request)
     {
@@ -163,6 +172,7 @@ class BlogAdminController extends Controller
      * @param Request $request
      * @param $article
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function delArticleAction(Article $article, Request $request)
     {
@@ -184,6 +194,7 @@ class BlogAdminController extends Controller
      * @Route("/admin/viewlistallarticle", name="admin_view_list_all_article")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function viewListAllArticleAction(Request $request)
     {
@@ -213,6 +224,7 @@ class BlogAdminController extends Controller
      * @Route("/admin/configuration", name="admin_configuration")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function configurationAction(Request $request)
     {
@@ -236,6 +248,7 @@ class BlogAdminController extends Controller
     /**
      * @Route("/admin/users", name="admin_users")
      * @return \Symfony\Component\HttpFoundation\Response
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function usersAction()
     {

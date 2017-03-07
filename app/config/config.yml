@@ -107,3 +107,9 @@ knp_paginator:
     template:
         pagination: BlogGeneralBundle:Pagination:twitter_bootstrap_v3_pagination.html.twig
         sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template
+
+services:
+    twig.extension.text:
+        class: Twig_Extensions_Extension_Text
+        tags:
+            - { name: twig.extension }

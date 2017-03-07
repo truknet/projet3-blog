@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Blog\GeneralBundle\Entity\Comment;
 
 
 class CommentType extends AbstractType
@@ -31,7 +32,7 @@ class CommentType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Blog\GeneralBundle\Entity\Comment'
+            'data_class' => Comment::class,
         ));
     }
 

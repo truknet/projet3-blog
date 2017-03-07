@@ -10,8 +10,20 @@
             <h1>Affichage des articles.</h1>
             <br>
             {% for article in pagination %}
-                {{ include("BlogGeneralBundle:Blog:Include-Article.html.twig") }}
-                {{ include("BlogGeneralBundle:Blog:Include-Comment.html.twig") }}
+                {# Affichage du panel Article #}
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{ article.title }}</h3>
+                    </div>
+                    <div class="panel-body">
+                        {{ article.content | truncate(400, true, '<b><i>...(Lire la suite)</i></b>')|raw }}
+                        <hr>
+                        Auteur : {{ article.author }}
+                        - Date de création : {{ article.dateCreate|date('d/m/Y') }}
+                        {{ article.dateUpdate is empty ? "" : ' - Mise à jour : ' ~ article.dateUpdate|date("d/m/Y") }}
+                        <a class="btn btn-primary btn-xs boutonedit" href="{{ path('view_article', {'id': article.id}) }}">Lire l'article complet</a>
+                    </div>
+                </div>
             {% endfor %}
             <div class="navigation">
                 {{ knp_pagination_render(pagination) }}
