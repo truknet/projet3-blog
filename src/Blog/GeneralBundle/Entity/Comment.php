@@ -30,13 +30,20 @@ class Comment
     /**
      * Many Comments have One Comment.
      * @ORM\ManyToOne(targetEntity="Comment", inversedBy="childrens")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $parent;
+
+    /**
+     * @var
+     * @ORM\Column(name="depth", type="integer", options={"default":0})
+     */
+    private $depth = 0;
 
 
     public function __construct() {
         $this->children = new ArrayCollection();
+        $this->dateCreate = new \DateTime();
     }
 
     /**
@@ -328,7 +335,8 @@ class Comment
     public function setParent(\Blog\GeneralBundle\Entity\Comment $parent = null)
     {
         $this->parent = $parent;
-
+        $this->depth = $parent->getDepth()+1;
+        $this->article = $parent->getArticle();
         return $this;
     }
 
@@ -340,5 +348,29 @@ class Comment
     public function getParent()
     {
         return $this->parent;
+    }
+
+    /**
+     * Set depth
+     *
+     * @param integer $depth
+     *
+     * @return Comment
+     */
+    public function setDepth($depth)
+    {
+        $this->depth = $depth;
+
+        return $this;
+    }
+
+    /**
+     * Get depth
+     *
+     * @return integer
+     */
+    public function getDepth()
+    {
+        return $this->depth;
     }
 }

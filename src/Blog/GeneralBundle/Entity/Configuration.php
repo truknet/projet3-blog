@@ -3,6 +3,7 @@
 namespace Blog\GeneralBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Configuration
@@ -45,13 +46,6 @@ class Configuration
     /**
      * @var int
      *
-     * @ORM\Column(name="nbarticleperpageadmin", type="integer")
-     */
-    private $nbArticlePerPageAdmin;
-
-    /**
-     * @var int
-     *
      * @ORM\Column(name="nbarticleperpageinlistadmin", type="integer")
      */
     private $nbArticlePerPageInListAdmin;
@@ -87,11 +81,24 @@ class Configuration
     /**
      * @var bool
      *
+     * @ORM\Column(name="viewcommentoverlevellimitblog", type="boolean")
+     */
+    private $viewCommentOverLevelLimitBlog;
+
+    /**
+     * @var bool
+     *
      * @ORM\Column(name="commentautopublished", type="boolean")
      */
     private $commentAutoPublished;
 
-
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="txt_home", type="text")
+     * @Assert\NotBlank()
+     */
+    private $txtHome;
 
     /**
      * Get id
@@ -173,30 +180,6 @@ class Configuration
     public function getThemeAdmin()
     {
         return $this->themeAdmin;
-    }
-
-    /**
-     * Set nbArticlePerPageAdmin
-     *
-     * @param integer $nbArticlePerPageAdmin
-     *
-     * @return Configuration
-     */
-    public function setNbArticlePerPageAdmin($nbArticlePerPageAdmin)
-    {
-        $this->nbArticlePerPageAdmin = $nbArticlePerPageAdmin;
-
-        return $this;
-    }
-
-    /**
-     * Get nbArticlePerPageAdmin
-     *
-     * @return integer
-     */
-    public function getNbArticlePerPageAdmin()
-    {
-        return $this->nbArticlePerPageAdmin;
     }
 
     /**
@@ -341,5 +324,53 @@ class Configuration
     public function getCommentAutoPublished()
     {
         return $this->commentAutoPublished;
+    }
+
+    /**
+     * Set viewCommentOverLevelLimitBlog
+     *
+     * @param boolean $viewCommentOverLevelLimitBlog
+     *
+     * @return Configuration
+     */
+    public function setViewCommentOverLevelLimitBlog($viewCommentOverLevelLimitBlog)
+    {
+        $this->viewCommentOverLevelLimitBlog = $viewCommentOverLevelLimitBlog;
+
+        return $this;
+    }
+
+    /**
+     * Get viewCommentOverLevelLimitBlog
+     *
+     * @return boolean
+     */
+    public function getViewCommentOverLevelLimitBlog()
+    {
+        return $this->viewCommentOverLevelLimitBlog;
+    }
+
+    /**
+     * Set txtHome
+     *
+     * @param string $txtHome
+     *
+     * @return Configuration
+     */
+    public function setTxtHome($txtHome)
+    {
+        $this->txtHome = $txtHome;
+
+        return $this;
+    }
+
+    /**
+     * Get txtHome
+     *
+     * @return string
+     */
+    public function getTxtHome()
+    {
+        return $this->txtHome;
     }
 }

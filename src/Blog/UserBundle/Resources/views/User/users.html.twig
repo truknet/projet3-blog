@@ -1,0 +1,45 @@
+{% extends "BlogGeneralBundle::layoutAdmin.html.twig" %}
+{% block title %}Gestion utilisateurs{% endblock %}
+{% block body %}
+    <h1>Gestion utilisateurs</h1>
+    <br />
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Email</th>
+            <th>Nom utilisateur</th>
+            <th>Actif</th>
+            <th>Role</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr {% if loop.index is odd %}class="color"{% endif %}>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.enabled }}</td>
+                    <td>
+                        {% for role in user.roles %}
+                            {{ role }}<br>
+                        {% endfor %}
+                    </td>
+                    <td>
+                        <p>
+                            <a class="btn btn-primary btn-xs boutonedit" href="{{ path('admin_edit_user', {'id': user.id}) }}">Editer</a>
+                            <a class="btn btn-primary btn-xs boutondel" href="{{ path('admin_delete_user', {'username': user.username}) }}">Supprimer</a>
+                            <a class="btn btn-primary btn-xs boutondel" href="{{ path('admin_activate_user', {'username': user.username}) }}">Activer/Désactiver</a>
+                            <a class="btn btn-primary btn-xs boutondel" href="{{ path('fos_user_change_password') }}">Changer Mot de passe</a>
+                        </p>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+
+
+

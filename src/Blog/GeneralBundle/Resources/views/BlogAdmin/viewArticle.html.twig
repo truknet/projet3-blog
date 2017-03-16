@@ -1,13 +1,9 @@
 {% extends "BlogGeneralBundle::layoutAdmin.html.twig" %}
-
 {% block title %}Affiche un article{% endblock %}
-
 {% block body %}
-
-
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <h3 class="panel-title">{{ article.id }} - {{ article.title }}</h3>
+            <h3 class="panel-title">{{ article.title }}</h3>
         </div>
         <div class="panel-body">
             {{ article.content|raw }}
@@ -20,142 +16,15 @@
         </div>
     </div>
 
+    {% from "BlogGeneralBundle:BlogAdmin:Include-AdminComment.html.twig" import afficherCommentaires %}
+    {{ afficherCommentaires(comments) }}
 
 
+    {% if (app.request.headers.get('referer')) %}
+        <a href="{{ app.request.headers.get('referer') }}" class="btn btn-default">Retour</a>
+    {% else %}
+        <a href="{{ path('admin_view_list_all_article', {'page': 1}) }}" class="btn btn-default">Retour à liste</a>
+    {% endif %}
 
-
-    <div class="comment1">
-
-        {% for comment in article.comments %}
-
-
-            {% if comment.parent is null %}
-
-                {% if comment.published == true %}
-
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">
-                                {{ comment.id }} - {{ comment.title }}
-                                {% if comment.published == false %}
-                                    <a class="boutonvalid btn btn-warning btn-xs" href="{{ path('admin_valid_comment', {'id': comment.id}) }}">En attente de validation</a>
-                                {% else %}
-                                    <a class="boutonvalid btn btn-success btn-xs" href="#">Validé</a>
-                                {% endif %}
-                            </h3>
-                        </div>
-                        <div class="panel-body">
-                            {{ comment.content }}
-                            <hr>
-                            Auteur : {{ comment.author }}
-                            - Date de création : {{ comment.dateCreate|date('d/m/Y') }}
-                            {{ comment.dateUpdate is empty ? "" : ' - Mise à jour : ' ~ comment.dateUpdate|date("d/m/Y") }}
-                            <button class="boutoncomment btn btn-primary btn-xs" type="button" data-toggle="collapse" data-target="#Comment1{{ comment.id }}" aria-expanded="false" aria-controls="Comment1{{ comment.id }}">
-                                Commenter
-                            </button>
-                            <a class="boutonedit btn btn-primary btn-xs" href="{{ path('admin_edit_comment', {'id': comment.id}) }}">Editer </a>
-                            <a class="boutondel btn btn-primary btn-xs" href="{{ path('admin_del_comment', {'id': comment.id}) }}">Supprimer </a>
-                        </div>
-                    </div>
-
-                    <div class="comment1">
-                        {% for children in comment.childrens %}
-                            {% if children.published == true %}
-
-                                <div class="panel panel-info">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title">
-                                            {{ children.id }} - {{ children.title }}
-                                            {% if children.published == false %}
-                                                <a class="boutonvalid btn btn-warning btn-xs" href="{{ path('admin_valid_comment', {'id': children.id}) }}">En attente de validation</a>
-                                            {% else %}
-                                                <a class="boutonvalid btn btn-success btn-xs" href="#">Validé</a>
-                                            {% endif %}
-                                        </h3>
-                                    </div>
-                                    <div class="panel-body">
-                                        {{ children.content }}
-                                        <hr>
-                                        Auteur : {{ children.author }}
-                                        - Date de création : {{ children.dateCreate|date('d/m/Y') }}
-                                        {{ children.dateUpdate is empty ? "" : ' - Mise à jour : ' ~ children.dateUpdate|date("d/m/Y") }}
-                                        <button class="boutoncomment btn btn-primary btn-xs" type="button" data-toggle="collapse" data-target="#Comment1{{ children.id }}" aria-expanded="false" aria-controls="Comment1{{ children.id }}">
-                                            Commenter
-                                        </button>
-                                        <a class="boutonedit btn btn-primary btn-xs" href="{{ path('admin_edit_comment', {'id': children.id}) }}">Editer </a>
-                                        <a class="boutondel btn btn-primary btn-xs" href="{{ path('admin_del_comment', {'id': children.id}) }}">Supprimer </a>
-                                    </div>
-                                </div>
-                            {% endif %}
-                            <div class="comment1">
-                                {% for children in children.childrens %}
-                                    {% if children.published == true %}
-
-                                        <div class="panel panel-info">
-                                            <div class="panel-heading">
-                                                <h3 class="panel-title">
-                                                    {{ children.id }} - {{ children.title }}
-                                                    {% if children.published == false %}
-                                                        <a class="boutonvalid btn btn-warning btn-xs" href="{{ path('admin_valid_comment', {'id': children.id}) }}">En attente de validation</a>
-                                                    {% else %}
-                                                        <a class="boutonvalid btn btn-success btn-xs" href="#">Validé</a>
-                                                    {% endif %}
-                                                </h3>
-
-                                            </div>
-                                            <div class="panel-body">
-                                                {{ children.content }}
-                                                <hr>
-                                                Auteur : {{ children.author }}
-                                                - Date de création : {{ children.dateCreate|date('d/m/Y') }}
-                                                {{ children.dateUpdate is empty ? "" : ' - Mise à jour : ' ~ children.dateUpdate|date("d/m/Y") }}
-                                                <button class="boutoncomment btn btn-primary btn-xs" type="button" data-toggle="collapse" data-target="#Comment1{{ children.id }}" aria-expanded="false" aria-controls="Comment1{{ children.id }}">
-                                                    Commenter
-                                                </button>
-                                                <a class="boutonedit btn btn-primary btn-xs" href="{{ path('admin_edit_comment', {'id': children.id}) }}">Editer </a>
-                                                <a class="boutondel btn btn-primary btn-xs" href="{{ path('admin_del_comment', {'id': children.id}) }}">Supprimer </a>
-                                            </div>
-                                        </div>
-                                    {% endif %}
-                                    <div class="comment1">
-                                        {% for children in children.childrens %}
-                                            {% if children.published == true %}
-                                                <div class="panel panel-info">
-                                                    <div class="panel-heading">
-                                                        <h3 class="panel-title">
-                                                            {{ children.id }} - {{ children.title }}
-                                                            {% if children.published == false %}
-                                                                <a class="boutonvalid btn btn-warning btn-xs" href="{{ path('admin_valid_comment', {'id': children.id}) }}">En attente de validation</a>
-                                                            {% else %}
-                                                                <a class="boutonvalid btn btn-success btn-xs" href="#">Validé</a>
-                                                            {% endif %}
-                                                        </h3>
-
-                                                    </div>
-                                                    <div class="panel-body">
-                                                        {{ children.content }}
-                                                        <hr>
-                                                        Auteur : {{ children.author }}
-                                                        - Date de création : {{ children.dateCreate|date('d/m/Y') }}
-                                                        {{ children.dateUpdate is empty ? "" : ' - Mise à jour : ' ~ children.dateUpdate|date("d/m/Y") }}
-                                                        <button class="boutoncomment btn btn-primary btn-xs" type="button" data-toggle="collapse" data-target="#Comment1{{ children.id }}" aria-expanded="false" aria-controls="Comment1{{ children.id }}">
-                                                            Commenter
-                                                        </button>
-                                                        <a class="boutonedit btn btn-primary btn-xs" href="{{ path('admin_edit_comment', {'id': children.id}) }}">Editer </a>
-                                                        <a class="boutondel btn btn-primary btn-xs" href="{{ path('admin_del_comment', {'id': children.id}) }}">Supprimer </a>
-                                                    </div>
-                                                </div>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            {% endif %}
-        {% endfor %}
-    </div>
-    <a href="{{ path('admin_view_list_all_article') }}" class="btn btn-default">Retour à liste</a>
 {% endblock %}
 

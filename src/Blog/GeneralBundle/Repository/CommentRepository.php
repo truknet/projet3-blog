@@ -19,4 +19,17 @@ class CommentRepository extends \Doctrine\ORM\EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function searchcomment($critere)
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb->where('a.title LIKE :title')
+           ->setParameter('title','%'.$critere.'%')
+           ->orWhere('a.content LIKE :content')
+           ->setParameter('content','%'.$critere.'%')
+           ->orWhere('a.author LIKE :author')
+           ->setParameter('author','%'.$critere.'%');
+        return $qb->getQuery()->getResult();
+
+    }
+
 }

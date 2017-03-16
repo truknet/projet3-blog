@@ -25,9 +25,7 @@ class ArticleType extends AbstractType
             ->add('author',         TextType::class)
             ->add('content',        TextareaType::class, array('attr' => array('class' => 'tinymce')))
             ->add('published',      CheckboxType::class, array('required' => false))
-            ->add('save',           SubmitType::class, array('label' => 'Valider'))
-
-            ->add('comments', CollectionType::class, array(
+             ->add('comments', CollectionType::class, array(
                 'entry_type' => CommentType::class,
             ))
         ;

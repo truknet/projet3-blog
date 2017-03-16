@@ -16,7 +16,7 @@
                         <h3 class="panel-title">{{ article.title }}</h3>
                     </div>
                     <div class="panel-body">
-                        {{ article.content | truncate(400, true, '<b><i>...(Lire la suite)</i></b>')|raw }}
+                        {{ article.content | truncate(400, true, '...')|raw }} <a href="{{ path('view_article', {'id': article.id}) }}"><i>(Lire la suite)</i></a>
                         <hr>
                         Auteur : {{ article.author }}
                         - Date de création : {{ article.dateCreate|date('d/m/Y') }}

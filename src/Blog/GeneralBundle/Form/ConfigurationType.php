@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class ConfigurationType extends AbstractType
 {
@@ -63,7 +64,6 @@ class ConfigurationType extends AbstractType
                     )
                 ))
             ->add('nbArticlePerPageBlog',                   IntegerType::class)
-            ->add('nbArticlePerPageAdmin',                  IntegerType::class)
             ->add('nbArticlePerPageInListBlog',             IntegerType::class)
             ->add('nbArticlePerPageInListAdmin',            IntegerType::class)
             ->add('nbArticleInSidebarArticleRecentBlog',    IntegerType::class)
@@ -76,7 +76,15 @@ class ConfigurationType extends AbstractType
                         'Non' => 0,
                     )
                 ))
-            ->add('save',                                   SubmitType::class, array('label' => 'Valider'))
+            ->add('viewCommentOverLevelLimitBlog',          ChoiceType::class,
+                array
+                (
+                    'choices'  => array(
+                        'Oui' => 1,
+                        'Non' => 0,
+                    )
+                ))
+            ->add('txtHome',        TextareaType::class, array('attr' => array('class' => 'tinymce')))
         ;
     }
     

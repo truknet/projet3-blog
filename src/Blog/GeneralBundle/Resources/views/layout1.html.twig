@@ -25,7 +25,21 @@
     {% endfor %}
 </div>
 
-{% block body %}{% endblock %}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9 block-main">
+
+            {% block body %}{% endblock %}
+
+        </div>
+        {# Affichage du panel des Articles recents dans la sidebar de droite #}
+        <div class="col-sm-3">
+            {{ include("BlogGeneralBundle:Blog:Include-Sidebar-ArticlesRecents.html.twig") }}
+        </div>
+    </div>
+</div>
 
 <footer class="footer">
     <div class="container">
@@ -37,5 +51,10 @@
 
 <script src="https://code.jquery.com/jquery.min.js"></script>
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+<script>
+    $( ".boutoncomment" ).click(function() {
+        $(".comment1").collapse("hide");
+    });
+</script>
 </body>
 </html>

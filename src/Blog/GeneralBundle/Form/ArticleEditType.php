@@ -13,6 +13,8 @@ class ArticleEditType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->remove('dateCreate');
+        $builder->remove('comments');
+
     }
 
     public function getParent()

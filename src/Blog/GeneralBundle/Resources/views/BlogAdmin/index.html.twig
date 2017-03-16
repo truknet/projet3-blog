@@ -1,11 +1,7 @@
 {% extends "BlogGeneralBundle::layoutAdmin.html.twig" %}
-
 {% block title %}Administration{% endblock %}
-
-
 {% block body %}
-    <h1 class="page-header">Dashboard</h1>
-
+    <h1 class="page-header">Tableau de bord</h1>
     <div class="alert alert-{{ message['comment'][0] }}" role="alert">
         {{ message['comment'][1] }}
         <button class="btn btn-primary boutonvalid btn-xs" type="button" data-toggle="collapse" data-target="#commentaire" aria-expanded="false" aria-controls="collapseExample">
@@ -34,8 +30,6 @@
         </div>
     </div>
 
-
-
     <div class="alert alert-{{ message['signal'][0] }}" role="alert">
         {{ message['signal'][1] }}
         <button class="btn btn-primary boutonvalid btn-xs" type="button" data-toggle="collapse" data-target="#signalement" aria-expanded="false" aria-controls="collapseExample">
@@ -43,7 +37,37 @@
         </button>
     </div>
     <div class="collapse" id="signalement">
+        {% for newReport in newReports %}
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Signalement N°{{ newReport.id }} pour le commentaire :
+                        {% if newReportComment[newReport.id] == null %}
+                        <span class="text-danger">Le commentaire n'existe pas !</span>
+                        {% else %}
+                           {{ newReportComment[newReport.id].title }}</h3>
+                        {% endif %}
+                </div>
+                <div class="panel-body">
+                    Contenu du commentaire :
+                    {% if newReportComment[newReport.id] == null %}
+                        ....
+                    {% else %}
+                        {{ newReportComment[newReport.id].content }}
+                        <br/>
+                        <a class="boutonedit btn btn-primary btn-xs" href="{{ path('admin_edit_comment', {'id': newReportComment[newReport.id].id}) }}">Editer le commentaire</a>
+                        <br/>
+                    {% endif %}
 
+                    <hr>
+                    Message : {{ newReport.message }}
+                    <hr>
+                    Auteur : {{ newReport.name }}
+                    - Date de création : {{ newReport.date|date('d/m/Y') }}
+                    <a class="boutondel btn btn-primary btn-xs" href="{{ path('admin_del_report', {'id': newReport.id}) }}">Supprimer </a>
+                    <a class="boutonvalid btn btn-primary btn-xs" href="{{ path('admin_archive_report', {'id': newReport.id}) }}">Archiver </a>
+                </div>
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}
 

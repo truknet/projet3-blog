@@ -2,6 +2,10 @@ blog_general:
     resource: '@BlogGeneralBundle/Controller/'
     type:     annotation
 
+blog_users:
+    resource: '@BlogUserBundle/Controller/'
+    type:     annotation
+
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 

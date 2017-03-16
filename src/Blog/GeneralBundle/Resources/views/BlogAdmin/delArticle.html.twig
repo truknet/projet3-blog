@@ -11,15 +11,9 @@
             Etes-vous certain de vouloir supprimer l'article "{{ article.title }}" ?
         </p>
 
-        {# On met l'id de l'article dans la route de l'action du formulaire #}
         <form action="{{ path('admin_del_article', {'id': article.id}) }}" method="post">
-            <a href="{{ path('admin_view_article', {'id': article.id}) }}" class="btn btn-default">Retour à l'article</a>
-            <a href="{{ path('admin_view_list_all_article') }}" class="btn btn-default">Retour à liste</a>
-
-            {# Ici j'ai écrit le bouton de soumission à la main #}
+            <a href="{{ path('admin') }}" class="btn btn-default">Retour au tableau de bord</a>
             <input type="submit" value="Supprimer" class="btn btn-danger" />
-            {# Ceci va générer le champ CSRF #}
-            {{ form_rest(form) }}
         </form>
 
 {% endblock %}

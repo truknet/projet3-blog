@@ -27,6 +27,7 @@ class LoadArticleData extends AbstractFixture implements OrderedFixtureInterface
             $comment1->setAuthor('Sandrine');
             $comment1->setDatecreate(new \DateTime("now"));
             $comment1->setPublished(true);
+            $comment1->setDepth(0);
 
             $comment2 = new Comment();
             $comment2->setTitle('Mon premier commentaire niveau 1.');
@@ -34,6 +35,7 @@ class LoadArticleData extends AbstractFixture implements OrderedFixtureInterface
             $comment2->setAuthor('Christelle');
             $comment2->setDatecreate(new \DateTime("now"));
             $comment2->setPublished(true);
+            $comment2->setDepth(0);
 
             $comment3 = new Comment();
             $comment3->setTitle('Mon premier sous commentaire niveau 2.');
@@ -41,6 +43,7 @@ class LoadArticleData extends AbstractFixture implements OrderedFixtureInterface
             $comment3->setAuthor('Christelle');
             $comment3->setDatecreate(new \DateTime("now"));
             $comment3->setPublished(true);
+            $comment3->setDepth(1);
 
             $comment4 = new Comment();
             $comment4->setTitle('Mon premier sous commentaire niveau 3.');
@@ -48,13 +51,15 @@ class LoadArticleData extends AbstractFixture implements OrderedFixtureInterface
             $comment4->setAuthor('Christelle');
             $comment4->setDatecreate(new \DateTime("now"));
             $comment4->setPublished(true);
+            $comment4->setDepth(2);
 
             $comment5 = new Comment();
             $comment5->setTitle('Mon premier sous commentaire niveau 4.');
             $comment5->setContent('Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
             $comment5->setAuthor('Christelle');
             $comment5->setDatecreate(new \DateTime("now"));
-            $comment5->setPublished(true);
+            $comment5->setPublished(false);
+            $comment5->setDepth(3);
 
             // Ajout de 2 commentaires niveau 1 (apres article)
             $article->addComment($comment1);

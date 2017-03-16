@@ -1,7 +1,7 @@
 {# Affichage du panel Ecrire un commentaire si click sur bouton 'commenter' #}
-<div class="collapse , comment1" id="{{ article.id }}">
+<div class="collapse , comment1" id="article{{ article.id }}">
     <div class="well">
-        <h5>Ecrire un commentaire</h5>
+        <h3>Ecrire un commentaire</h3>
         {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
         {# Les erreurs générales du formulaire. #}
         {{ form_errors(form) }}
@@ -32,16 +32,9 @@
                 {{ form_widget(form.author, {'attr': {'class': 'form-control'}}) }}
             </div>
         </div>
-
-        {# Pour le bouton, pas de label ni d'erreur, on affiche juste le widget #}
-        {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
-
-        {# Génération automatique des champs pas encore écrits.
-           Dans cet exemple, ce serait le champ CSRF (géré automatiquement par Symfony !)
-           et tous les champs cachés (type « hidden »). #}
-        {{ form_rest(form) }}
-
-        {# Fermeture de la balise <form> du formulaire HTML #}
+        <div>
+            <input type="submit" value="Valider" class="btn btn-primary" />
+        </div>
         {{ form_end(form) }}
     </div>
 </div>

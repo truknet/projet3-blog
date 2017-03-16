@@ -3,10 +3,11 @@
 namespace Blog\GeneralBundle\Controller;
 
 use Blog\GeneralBundle\Entity\Article;
+use Blog\GeneralBundle\Entity\ReportAbus;
+use Blog\GeneralBundle\Form\ReportAbusType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Blog\GeneralBundle\Entity\Comment;
-use Blog\GeneralBundle\Form\ArticleType;
 use Blog\GeneralBundle\Form\CommentType;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,7 +22,6 @@ class BlogController extends Controller
         return $this->render('BlogGeneralBundle:Blog:index.html.twig');
     }
 
-
     /**
      * @Route("/commentreply/{comment}", name="comment_reply")
      * @param Comment $comment
@@ -34,41 +34,25 @@ class BlogController extends Controller
         $config = $this->container->get('blog_general.toolsbox')->loadConfig();
         // Récuperation de la liste pour la sidebar "Articles récents"
         $listArticlesForSidebar = $this->container->get('blog_general.toolsbox')->lastArticles();
-
         // initialisation formulaire commentaire
         $commentChild = new Comment();
-        $commentChild->setDateCreate(new \DateTime());
+        $commentChild->setParent($comment);
         $commentChild->setPublished($config->getCommentAutoPublished());
-
-
-        $form = $this->get('form.factory')->create(CommentType::class, $commentChild);
-
-        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+        $form = $this->get('form.factory')->create(CommentType::class, $commentChild, array('action' => $this->generateUrl('comment_reply', array('comment' => $comment->getId()))));
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-
-            // ajout d'un commentaire niveau 2 (apres commentaire derriere article)
-            $comment->addChildren($commentChild);
-            $commentChild->setParent($comment);
-            $commentChild->setArticle($comment->getArticle());
-
-            $em->persist($comment);
             $em->persist($commentChild);
             $em->flush();
-
             $request->getSession()->getFlashBag()->add('info', 'Commentaire bien enregistré.');
             return $this->redirectToRoute('view_article', array('id' => $comment->getArticle()->getId()));
         }
-
-
-        // Le render ne change pas, on passait avant un tableau, maintenant un objet
         return $this->render('BlogGeneralBundle:Blog:commentReply.html.twig', array(
             'comment' => $comment,
             'form' => $form->createView(),
             'listArticlesForSidebar' => $listArticlesForSidebar
         ));
     }
-
-
 
     /**
      * @Route("/viewarticle/{id}", name="view_article")
@@ -83,38 +67,34 @@ class BlogController extends Controller
         $config = $this->container->get('blog_general.toolsbox')->loadConfig();
         // Récuperation de la liste pour la sidebar "Articles récents"
         $listArticlesForSidebar = $this->container->get('blog_general.toolsbox')->lastArticles();
-
-        // initialisation formulaire commentaire
+        $em = $this->getDoctrine()->getManager();
         $comment = new Comment();
-        $comment->setDateCreate(new \DateTime());
         $comment->setPublished($config->getCommentAutoPublished());
-
+        $comments = $em->getRepository("BlogGeneralBundle:Comment")->findBy(array("parent" => null, "article" => $article));
         $form = $this->get('form.factory')->create(CommentType::class, $comment);
-
-        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             $comment->setArticle($article);
-            $em->persist($article);
             $em->persist($comment);
             $em->flush();
             $request->getSession()->getFlashBag()->add('info', 'Commentaire bien enregistré.');
             return $this->redirectToRoute('view_article', array('id' => $article->getId()));
         }
-        // Le render ne change pas, on passait avant un tableau, maintenant un objet
         return $this->render('BlogGeneralBundle:Blog:viewArticle.html.twig', array(
             'article' => $article,
+            'comments' => $comments,
             'form' => $form->createView(),
             'listArticlesForSidebar' => $listArticlesForSidebar
         ));
     }
 
     /**
-     * @Route("/viewallarticletest", name="view_all_article_test")
+     * @Route("/viewallarticle/{page}", name="view_all_article")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws NotFoundHttpException
      */
-    public function viewAllArticleTestAction(Request $request)
+    public function viewAllArticleAction($page, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         // Récuperation de la configuration
@@ -123,114 +103,73 @@ class BlogController extends Controller
         $listArticlesForSidebar = $this->container->get('blog_general.toolsbox')->lastArticles();
         $queryBuilder = $em->getRepository('BlogGeneralBundle:Article')->createQueryBuilder('article');
         $query = $queryBuilder->getQuery();
-
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $query, /* query NOT result */
-            $request->query->getInt('page', 1)/*page number*/,
+            $page/*page number*/,
             $config->getNbArticlePerPageBlog()/*limit per page*/
         );
-
-
-        // initialisation formulaire commentaire
-        $em = $this->getDoctrine()->getManager();
-        foreach ($pagination as $article){
-            $comment = 'comment' . $article->getId();
-            ${'comment' . $article->getId()} = new Comment();
-            dump($article);
-            ${'comment' . $article->getId()}->setArticle($article);
-            ${'comment' . $article->getId()}->setDateCreate(new \DateTime());
-            ${'comment' . $article->getId()}->setPublished($config->getCommentAutoPublished());
-            $article->getComments()->add(${'comment' . $article->getId()});
-
-        }
-
-        dump(${'comment' . $article->getId()});
-
-
-        $form = $this->createForm(ArticleType::class, $article);
-        dump($form);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $comment->setArticle($article);
-            $em->persist($article);
-            $em->persist($comment);
-            $em->flush();
-            $request->getSession()->getFlashBag()->add('info', 'Commentaire bien enregistré.');
-            return $this->redirectToRoute('view_article', array('id' => $article->getId()));
-        }
-
-        return $this->render('BlogGeneralBundle:Blog:viewAllArticleTest.html.twig', array(
-            'pagination' => $pagination,
-            'form' => $form->createView(),
-            'listArticlesForSidebar' => $listArticlesForSidebar
-        ));
-    }
-
-
-
-    /**
-     * @Route("/viewallarticle", name="view_all_article")
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws NotFoundHttpException
-     */
-    public function viewAllArticleAction(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-        // Récuperation de la configuration
-        $config = $this->container->get('blog_general.toolsbox')->loadConfig();
-        // Récuperation de la liste pour la sidebar "Articles récents"
-        $listArticlesForSidebar = $this->container->get('blog_general.toolsbox')->lastArticles();
-        $queryBuilder = $em->getRepository('BlogGeneralBundle:Article')->createQueryBuilder('article');
-        $query = $queryBuilder->getQuery();
-
-        $paginator  = $this->get('knp_paginator');
-        $pagination = $paginator->paginate(
-            $query, /* query NOT result */
-            $request->query->getInt('page', 1)/*page number*/,
-            $config->getNbArticlePerPageBlog()/*limit per page*/
-        );
-
         return $this->render('BlogGeneralBundle:Blog:viewAllArticle.html.twig', array(
             'pagination' => $pagination,
             'listArticlesForSidebar' => $listArticlesForSidebar
         ));
     }
 
-
     /**
-     * @Route("/viewlistallarticle", name="view_list_all_article")
+     * @Route("/viewlistallarticle/{page}", name="view_list_all_article")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function viewListAllArticleAction(Request $request)
+    public function viewListAllArticleAction($page, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         // Récuperation de la configuration
         $config = $this->container->get('blog_general.toolsbox')->loadConfig();
         // Récuperation de la liste pour la sidebar "Articles récents"
         $listArticlesForSidebar = $this->container->get('blog_general.toolsbox')->lastArticles();
-
         $queryBuilder = $em->getRepository('BlogGeneralBundle:Article')->createQueryBuilder('article');
         $query = $queryBuilder->getQuery();
-
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $query, /* query NOT result */
-            $request->query->getInt('page', 1)/*page number*/,
+            $page/*page number*/,
             $config->getNbArticlePerPageInListBlog()/*limit per page*/
         );
-
-        // Le render ne change pas, on passait avant un tableau, maintenant un objet
         return $this->render('BlogGeneralBundle:Blog:viewListAllArticle.html.twig', array(
             'pagination' => $pagination,
             'listArticlesForSidebar' => $listArticlesForSidebar
         ));
     }
 
-
+    /**
+     * @Route("/reportabus/{comment}", name="report_abus")
+     * @param Comment $comment
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function reportAbusAction(Comment $comment, Request $request)
+    {
+        $reportAbus = new ReportAbus();
+        $reportAbus->setIdComment($comment->getId());
+        $reportAbus->setDate(new \DateTime());
+        $reportAbus->setNewReport(true);
+        $form = $this->get('form.factory')->create(ReportAbusType::class, $reportAbus,
+            array('action' => $this->generateUrl('report_abus', array('comment' => $comment->getId()))));
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+               $em = $this->getDoctrine()->getManager();
+               $em->persist($reportAbus);
+               $em->flush();
+               $request->getSession()->getFlashBag()->add('info', 'Vous avez signalé un abus avec succèss !');
+            } else {
+               $request->getSession()->getFlashBag()->add('warning', 'Erreur !');
+            }
+            return $this->redirectToRoute('view_article', array('id' => $comment->getArticle()->getId()));
+        }
+        return $this->render('BlogGeneralBundle:Blog:reportAbus.html.twig', array(
+            'comment' => $comment,
+            'form' => $form->createView(),
+        ));
+    }
 }

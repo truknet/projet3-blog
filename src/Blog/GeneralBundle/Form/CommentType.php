@@ -22,7 +22,6 @@ class CommentType extends AbstractType
             ->add('title',          TextType::class)
             ->add('content',        TextareaType::class)
             ->add('author',         TextType::class)
-            ->add('save',           SubmitType::class, array('label' => 'Valider'))
         ;
     }
 

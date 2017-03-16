@@ -1,0 +1,59 @@
+{% extends "BlogGeneralBundle::layoutAdmin.html.twig" %}
+
+{% block title %}Affiche la liste des commentaires{% endblock %}
+
+{% block body %}
+    <h1>Affichage de la liste de tous les commentaires</h1>
+    <div class="count">
+        <p>Total d'articles : {{ pagination.getTotalItemCount }}</p>
+    </div>
+    <br>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>{{ knp_pagination_sortable(pagination, 'Id', 'comment.id') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Title', 'comment.title') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Création', 'comment.dateCreate') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Mise à jour', 'comment.dateUpdate') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Id Article', 'comment.article.id') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Niveau', 'comment.depth') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Status', 'comment.published') }}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for comment in pagination %}
+            <tr {% if loop.index is odd %}class="color"{% endif %}>
+                <td><a href="{{ path('admin_view_article', {'id': comment.id}) }}">{{ comment.id }}</a></td>
+                <td><a href="{{ path('admin_view_article', {'id': comment.id}) }}">{{ comment.title }}</a></td>
+                <td>{{ comment.dateCreate|date('d/m/Y') }}</td>
+                <td>{{ comment.dateUpdate is empty ? "" : comment.dateUpdate|date("d/m/Y") }}</td>
+                <td>N°{{ comment.article.id }}</td>
+                <td>{{ comment.depth }}</td>
+                <td>
+                    {% if comment.published == true %}
+                        <span class="label label-success"><i class="fa fa-check">&nbsp;</i></span>
+                    {% else %}
+                        <span class="label label-warning"><i class="fa fa-ban">&nbsp;</i></span>
+                    {% endif %}
+                </td>
+                <td>
+                    <p>
+                        <a class="btn btn-primary btn-xs boutonedit" href="{{ path('admin_edit_comment', {'id': comment.id}) }}">Editer</a>
+                        <a class="btn btn-primary btn-xs boutondel" href="{{ path('admin_del_comment', {'id': comment.id}) }}">Supprimer</a>
+                        <a class="btn btn-primary btn-xs boutonedit" href="{{ path('admin_view_article', {'id': comment.article.id}) }}">Lire article</a>
+                        <a class="btn btn-primary btn-xs boutonedit" href="{{ path('admin_view_comment', {'id': comment.id}) }}">Lire commentaire</a>
+                    </p>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {# display navigation #}
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+{% endblock %}
+
+
+

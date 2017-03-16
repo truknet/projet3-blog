@@ -1,0 +1,42 @@
+{% extends "BlogGeneralBundle::layoutAdmin.html.twig" %}
+{% block title %}Affiche un signalement d'abus{% endblock %}
+{% block body %}
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                Signalement N°{{ reportAbus.id }} pour le commentaire : {{ reportComment.title }}
+                {% if (reportAbus.newReport == false) %}
+                    <button class="boutonedit btn btn-info btn-xs">Etat : Archivé</button>
+                {% else %}
+                    <button class="boutonedit btn btn-warning btn-xs">Etat : Non archivé</button>
+                {% endif %}
+
+            </h3>
+        </div>
+        <div class="panel-body">
+            <b>Contenu du commentaire :</b>
+            <br />
+            {{ reportComment.content }}
+            <br/>
+            <a class="boutonedit btn btn-primary btn-xs" href="{{ path('admin_edit_comment', {'id': reportAbus.idComment}) }}">Editer le commentaire</a>
+            <br/>
+            <hr>
+            <b>Message :</b> {{ reportAbus.message }}
+            <hr>
+            Auteur : {{ reportAbus.name }}
+            - Date de création : {{ reportAbus.date|date('d/m/Y') }}
+            <a class="boutondel btn btn-primary btn-xs" href="{{ path('admin_del_report', {'id': reportAbus.id}) }}">Supprimer </a>
+            {% if (reportAbus.newReport == false) %}
+                <a class="boutonedit btn btn-primary btn-xs" href="{{ path('admin_in_archive_report', {'id': reportAbus.id}) }}">Réactiver</a>
+            {% else %}
+                <a class="boutonedit btn btn-primary btn-xs" href="{{ path('admin_archive_report', {'id': reportAbus.id}) }}">Archiver</a>
+            {% endif %}
+        </div>
+    </div>
+    {% if (app.request.headers.get('referer')) %}
+        <a href="{{ app.request.headers.get('referer') }}" class="btn btn-default">Retour</a>
+    {% else %}
+        <a href="{{ path('admin_view_list_all_report', {'page': 1}) }}" class="btn btn-default">Retour à liste</a>
+    {% endif %}
+{% endblock %}
+

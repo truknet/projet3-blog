@@ -1,3 +1,4 @@
+{% macro afficherArticle(article) %}
 {# Affichage du panel Article #}
 <div class="panel panel-primary">
     <div class="panel-heading">
@@ -9,9 +10,9 @@
         Auteur : {{ article.author }}
         - Date de création : {{ article.dateCreate|date('d/m/Y') }}
         {{ article.dateUpdate is empty ? "" : ' - Mise à jour : ' ~ article.dateUpdate|date("d/m/Y") }}
-        <button class="boutoncomment btn btn-primary btn-xs" type="button" data-toggle="collapse" data-target="#{{ article.id }}" aria-expanded="false" aria-controls="{{ article.id }}">
+        <button class="boutoncomment btn btn-primary btn-xs" type="button" data-toggle="collapse" data-target="#article{{ article.id }}" aria-expanded="false" aria-controls="article{{ article.id }}">
             <i class="fa fa-comments"></i> Commenter
         </button>
     </div>
-
 </div>
+{% endmacro %}

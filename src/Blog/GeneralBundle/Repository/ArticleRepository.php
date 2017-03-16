@@ -2,7 +2,7 @@
 
 namespace Blog\GeneralBundle\Repository;
 
-use Doctrine\ORM\Tools\Pagination\Paginator;
+
 use Doctrine\ORM\EntityRepository;
 /**
  * ArticleRepository
@@ -13,21 +13,17 @@ use Doctrine\ORM\EntityRepository;
 class ArticleRepository extends EntityRepository
 {
 
-    public function getArticlesxxxxxxxxxxxxxxxxxx($page, $nbPerPage)
+    public function searchArticle($critere)
     {
-        $query = $this->createQueryBuilder('a')
-            ->orderBy('a.dateCreate', 'DESC')
-            ->getQuery()
-        ;
+        $qb = $this->createQueryBuilder('a');
+        $qb->where('a.title LIKE :title')
+            ->setParameter('title','%'.$critere.'%')
+            ->orWhere('a.content LIKE :content')
+            ->setParameter('content','%'.$critere.'%')
+            ->orWhere('a.author LIKE :author')
+            ->setParameter('author','%'.$critere.'%');
+        return $qb->getQuery()->getResult();
 
-        $query
-            // On définit l'article à partir de laquelle commencer la liste
-            ->setFirstResult(($page-1) * $nbPerPage)
-            // Ainsi que le nombre d'article à afficher sur une page
-            ->setMaxResults($nbPerPage)
-        ;
-
-        // Enfin, on retourne l'objet Paginator correspondant à la requête construite
-        return new Paginator($query, true);
     }
+
 }

@@ -1,0 +1,59 @@
+{% extends "BlogGeneralBundle::layoutAdmin.html.twig" %}
+
+{% block title %}Affiche la liste des signalements d'abus{% endblock %}
+
+{% block body %}
+    <h1>Affichage de la liste de tous les signalements d'abus</h1>
+    <div class="count">
+        <p>Total de signalement : {{ pagination.getTotalItemCount }}</p>
+    </div>
+    <br>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>{{ knp_pagination_sortable(pagination, 'Id', 'report_abus.id') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Nom', 'report_abus.name') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Email', 'report_abus.email') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Date', 'report_abus.date') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Status', 'report_abus.newReport') }}</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for report_abus in pagination %}
+
+            <tr {% if loop.index is odd %}class="color"{% endif %}>
+                <td>{{ report_abus.id }}</a></td>
+                <td>{{ report_abus.name }}</a></td>
+                <td>{{ report_abus.email }}</a></td>
+                <td>{{ report_abus.date|date('d/m/Y') }}</td>
+                <td>
+                    {% if (report_abus.newReport == false) %}
+                        <a href="{{ path('admin_in_archive_report', {'id': report_abus.id}) }}">
+                            <span class="label label-success"><i class="fa fa-check">&nbsp;</i></span>
+                        </a>
+                    {% else %}
+                        <a href="{{ path('admin_archive_report', {'id': report_abus.id}) }}">
+                            <span class="label label-warning"><i class="fa fa-ban">&nbsp;</i></span>
+                        </a>
+                    {% endif %}
+                </td>
+                <td>
+                    <p>
+                        <a class="btn btn-primary btn-xs boutondel" href="{{ path('admin_del_report', {'id': report_abus.id}) }}">Supprimer</a>
+                        <a class="btn btn-primary btn-xs boutonedit" href="{{ path('admin_view_report', {'id': report_abus.id}) }}">Lire</a>
+                    </p>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {# display navigation #}
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+{% endblock %}
+
+
+

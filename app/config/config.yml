@@ -78,15 +78,16 @@ fos_user:
     firewall_name: main                      # Le nom du firewall derrière lequel on utilisera ces utilisateurs
     user_class:    Blog\UserBundle\Entity\User # La classe de l'entité User que nous utilisons
     from_email:
-        address:        noreply@example.com
-        sender_name:    Demo App
+        address:        info@trukotop.com
+        sender_name:    Blog
+
 
 stfalcon_tinymce:
         include_jquery: true
         tinymce_jquery: true
         selector: ".tinymce"
         # Get current language from the parameters.ini
-        language: %locale%
+        language: "%locale%"
         theme:
             simple:
                 theme: "modern"
