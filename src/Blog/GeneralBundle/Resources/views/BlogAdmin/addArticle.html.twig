@@ -36,14 +36,9 @@
                 {{ form_row(form.published) }}
             </div>
         </div>
-
         <div>
             <input type="submit" value="Valider" class="btn btn-primary" />
-            {% if (app.request.headers.get('referer')) %}
-                <a href="{{ app.request.headers.get('referer') }}" class="btn btn-default">Retour</a>
-            {% else %}
-                <a href="{{ path('admin_view_list_all_article', {'page': 1}) }}" class="btn btn-default">Retour à liste</a>
-            {% endif %}
+            <a href="{{ path('admin_view_list_all_article', {'page': 1}) }}" class="btn btn-default">Retour à liste</a>
         </div>
         {{ form_end(form) }}
     </div>

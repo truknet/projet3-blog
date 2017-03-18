@@ -19,12 +19,8 @@
     {% from "BlogGeneralBundle:BlogAdmin:Include-AdminComment.html.twig" import afficherCommentaires %}
     {{ afficherCommentaires(comments) }}
 
+    <a href="{{ path('admin_view_list_all_article', {'page': 1}) }}" class="btn btn-default">Retour à liste</a>
 
-    {% if (app.request.headers.get('referer')) %}
-        <a href="{{ app.request.headers.get('referer') }}" class="btn btn-default">Retour</a>
-    {% else %}
-        <a href="{{ path('admin_view_list_all_article', {'page': 1}) }}" class="btn btn-default">Retour à liste</a>
-    {% endif %}
 
 {% endblock %}
 

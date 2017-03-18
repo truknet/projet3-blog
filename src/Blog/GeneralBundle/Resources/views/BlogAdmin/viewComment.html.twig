@@ -15,12 +15,7 @@
             <a class="boutondel btn btn-primary btn-xs" href="{{ path('admin_del_comment', {'id': comment.id}) }}">Supprimer </a>
         </div>
     </div>
-
-    {% if (app.request.headers.get('referer')) %}
-        <a href="{{ app.request.headers.get('referer') }}" class="btn btn-default">Retour</a>
-    {% else %}
-        <a href="{{ path('admin_view_list_all_comment', {'page': 1}) }}" class="btn btn-default">Retour à liste</a>
-    {% endif %}
+    <a href="{{ path('admin_view_list_all_comment', {'page': 1}) }}" class="btn btn-default">Retour à liste</a>
 
 {% endblock %}
 

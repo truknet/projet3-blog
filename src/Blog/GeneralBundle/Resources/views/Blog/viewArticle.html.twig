@@ -1,4 +1,3 @@
-
 {% extends "BlogGeneralBundle::layout1.html.twig" %}
 
 {% block title %}Affichage d'un article{% endblock %}
@@ -14,11 +13,7 @@
     {{ afficherCommentaires(comments) }}
 
 
-    {% if (app.request.headers.get('referer')) %}
-        <a href="{{ app.request.headers.get('referer') }}" class="btn btn-default">Retour</a>
-    {% else %}
-        <a href="{{ path('view_list_all_article') }}" class="btn btn-default">Retour à liste</a>
-    {% endif %}
+    <a href="{{ path('view_list_all_article', {'page': 1}) }}" class="btn btn-default">Retour à liste</a>
 
 {% endblock %}
 {% block javascript %}

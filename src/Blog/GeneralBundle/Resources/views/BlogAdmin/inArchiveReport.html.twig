@@ -1,26 +1,12 @@
 {% extends "BlogGeneralBundle::layoutAdmin.html.twig" %}
-
 {% block title %}Réactiver un signalement{% endblock %}
-
 {% block body %}
-
-
         <h2>Réactiver un signalement</h2>
-
         <p>
             Etes-vous certain de vouloir réativer le signalement N°{{ reportAbus.id }} ?
         </p>
-
-        {# On met l'id de l'article dans la route de l'action du formulaire #}
         <form action="{{ path('admin_in_archive_report', {'id': reportAbus.id}) }}" method="post">
-
-            {% if (app.request.headers.get('referer')) %}
-                <a href="{{ app.request.headers.get('referer') }}" class="btn btn-default">Retour</a>
-            {% else %}
-                <a href="{{ path('admin') }}" class="btn btn-default">Retour au tableau de bord</a>
-            {% endif %}
-
+            <a href="{{ path('admin') }}" class="btn btn-default">Retour au tableau de bord</a>
             <input type="submit" value="Réactiver" class="btn btn-warning" />
         </form>
-
 {% endblock %}

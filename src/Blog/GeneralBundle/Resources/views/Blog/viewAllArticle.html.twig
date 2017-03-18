@@ -1,12 +1,8 @@
-{% extends "BlogGeneralBundle::layout.html.twig" %}
+{% extends "BlogGeneralBundle::layout1.html.twig" %}
 
 {% block title %}Affiche tous les articles avec commentaires{% endblock %}
 
 {% block body %}
-<div class="container">
-    <div class="row">
-        <div class="col-sm-9 block-main">
-
             <h1>Affichage des articles.</h1>
             <br>
             {% for article in pagination %}
@@ -28,13 +24,7 @@
             <div class="navigation">
                 {{ knp_pagination_render(pagination) }}
             </div>
-        </div>
 
-        <div class="col-sm-3">
-            {{ include("BlogGeneralBundle:Blog:Include-Sidebar-Articlesrecents.html.twig") }}
-        </div>
-    </div>
-</div>
 {% endblock %}
 
 
