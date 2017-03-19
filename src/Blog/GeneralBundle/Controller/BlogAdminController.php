@@ -24,34 +24,12 @@ class BlogAdminController extends Controller
      */
     public function indexAction()
     {
-        // Routine pour afficher les commentaires en attente de validation
-        $em = $this->getDoctrine()->getManager();
-        $comments = $em->getRepository('BlogGeneralBundle:Comment')->getCommentNoPublished();
-        $newReports = $em->getRepository('BlogGeneralBundle:ReportAbus')->getNewReport();
-        $newReportComment = null;
-        foreach ($newReports as $key => $value)
-        {
-            $newReportComment[$value->getId()] = $em->getRepository('BlogGeneralBundle:Comment')->findOneBy(array('id' => $value->getIdComment()));
-        }
-        if (count($newReports) == 0) {
-            $message['signal'] = ['success', 'Aucun signalement de contenu en attente de contrôle.'];
-        }
-        else {
-            $message['signal'] = ['warning', count($newReports) . ' Signalement(s) de contenu en attente de contrôle.'];
-        }
-
-        if (count($comments) == 0) {
-            $message['comment'] = ['success', 'Aucun commentaire en attente de validation.'];
-        }
-        else {
-            $message['comment'] = ['warning', count($comments) . ' Commentaire(s) en attente de validation.'];
-        }
+        $dashboard = $this->container->get('blog_general.toolsbox')->dashboard();
         return $this->render('BlogGeneralBundle:BlogAdmin:index.html.twig', array(
-            'message' => $message,
-            'comments' => $comments,
-            'newReports' => $newReports,
-            'newReportComment' => $newReportComment,
-
+            'message' => $dashboard['message'],
+            'comments' => $dashboard['comments'],
+            'newReports' => $dashboard['newReports'],
+            'newReportComment' => $dashboard['newReportComment'],
         ));
     }
 
