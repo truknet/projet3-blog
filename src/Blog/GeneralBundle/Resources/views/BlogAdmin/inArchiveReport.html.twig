@@ -1,12 +1,12 @@
 {% extends "BlogGeneralBundle::layoutAdmin.html.twig" %}
 {% block title %}Réactiver un signalement{% endblock %}
 {% block body %}
-        <h2>Réactiver un signalement</h2>
-        <p>
-            Etes-vous certain de vouloir réativer le signalement N°{{ reportAbus.id }} ?
-        </p>
-        <form action="{{ path('admin_in_archive_report', {'id': reportAbus.id}) }}" method="post">
-            <a href="{{ path('admin') }}" class="btn btn-default">Retour au tableau de bord</a>
-            <input type="submit" value="Réactiver" class="btn btn-warning" />
-        </form>
+    <h2>Réactiver un signalement</h2>
+    <p>
+        Etes-vous certain de vouloir réativer le signalement N°{{ reportAbus.id }} ?
+    </p>
+    {{ form_start(form) }}
+        <a href="{{ path('admin') }}" class="btn btn-default">Retour au tableau de bord</a>
+        <input type="submit" value="Réactiver" class="btn btn-warning" />
+    {{ form_end(form) }}
 {% endblock %}

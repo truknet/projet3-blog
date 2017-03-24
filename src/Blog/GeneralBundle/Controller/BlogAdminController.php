@@ -7,7 +7,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Blog\GeneralBundle\Entity\Article;
 use Blog\GeneralBundle\Entity\Comment;
 use Blog\GeneralBundle\Form\CommentType;
@@ -29,7 +28,7 @@ class BlogAdminController extends Controller
             'message' => $dashboard['message'],
             'comments' => $dashboard['comments'],
             'newReports' => $dashboard['newReports'],
-            'newReportComment' => $dashboard['newReportComment'],
+
         ));
     }
 
@@ -45,7 +44,7 @@ class BlogAdminController extends Controller
         $em = $this->getDoctrine()->getManager();
         $form = $this->get('form.factory')->create();
         $form->handleRequest($request);
-        if ($request->isMethod('POST')) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $comment->setPublished(true);
             $em->flush();
             $request->getSession()->getFlashBag()->add('success', "Le commentaire a bien été validé.");
@@ -69,7 +68,7 @@ class BlogAdminController extends Controller
         $em = $this->getDoctrine()->getManager();
         $form = $this->get('form.factory')->create();
         $form->handleRequest($request);
-        if ($request->isMethod('POST')) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em->remove($comment);
             $em->flush();
             $request->getSession()->getFlashBag()->add('success', "Le commentaire a bien été supprimé.");
@@ -128,8 +127,7 @@ class BlogAdminController extends Controller
         // Récuperation de la configuration
         $config = $this->container->get('blog_general.toolsbox')->loadConfig();
         $em = $this->getDoctrine()->getManager();
-        $queryBuilder = $em->getRepository('BlogGeneralBundle:Comment')->createQueryBuilder('comment')->orderBy('comment.dateCreate', 'DESC');
-        $query = $queryBuilder->getQuery();
+        $query = $em->getRepository('BlogGeneralBundle:Comment')->getAllComment();
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $query, /* query NOT result */
@@ -152,7 +150,7 @@ class BlogAdminController extends Controller
     public function viewArticleAction(Article $article)
     {
         $em = $this->getDoctrine()->getManager();
-        $comments = $em->getRepository("BlogGeneralBundle:Comment")->findBy(array("parent" => null, "article" => $article));
+        $comments = $em->getRepository("BlogGeneralBundle:Comment")->getCommentLevelOne($article);
         return $this->render('BlogGeneralBundle:BlogAdmin:viewArticle.html.twig', array(
             'article' => $article,
             'comments' => $comments,
@@ -168,7 +166,6 @@ class BlogAdminController extends Controller
     public function addArticleAction(Request $request)
     {
         $article = new Article();
-        $article->setDateCreate(new \DateTime());
         $form   = $this->get('form.factory')->create(ArticleEditType::class, $article);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -219,7 +216,7 @@ class BlogAdminController extends Controller
         $em = $this->getDoctrine()->getManager();
         $form = $this->get('form.factory')->create();
         $form->handleRequest($request);
-        if ($request->isMethod('POST')) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em->remove($article);
             $em->flush();
             $request->getSession()->getFlashBag()->add('success', "L'article a bien été supprimé.");
@@ -242,8 +239,7 @@ class BlogAdminController extends Controller
         // Récuperation de la configuration
         $config = $this->container->get('blog_general.toolsbox')->loadConfig();
         $em = $this->getDoctrine()->getManager();
-        $queryBuilder = $em->getRepository('BlogGeneralBundle:Article')->createQueryBuilder('article')->orderBy('article.dateCreate', 'DESC');
-        $query = $queryBuilder->getQuery();
+        $query = $em->getRepository('BlogGeneralBundle:Article')->getAllArticleDateCreateDesc();
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $query, /* query NOT result */
@@ -268,8 +264,7 @@ class BlogAdminController extends Controller
         // Récuperation de la configuration
         $config = $this->container->get('blog_general.toolsbox')->loadConfig();
         $em = $this->getDoctrine()->getManager();
-        $queryBuilder = $em->getRepository('BlogGeneralBundle:ReportAbus')->createQueryBuilder('report_abus')->orderBy('report_abus.date', 'DESC');
-        $query = $queryBuilder->getQuery();
+        $query = $em->getRepository('BlogGeneralBundle:ReportAbus')->getAllReportsDateDesc();
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $query, /* query NOT result */
@@ -291,11 +286,8 @@ class BlogAdminController extends Controller
      */
     public function viewReportAction(ReportAbus $reportAbus)
     {
-        $em = $this->getDoctrine()->getManager();
-        $reportComment = $em->getRepository('BlogGeneralBundle:Comment')->findOneBy(array('id' => $reportAbus->getIdComment()));
         return $this->render('BlogGeneralBundle:BlogAdmin:viewReport.html.twig', array(
             'reportAbus' => $reportAbus,
-            'reportComment' => $reportComment,
         ));
     }
 
@@ -311,7 +303,7 @@ class BlogAdminController extends Controller
         $em = $this->getDoctrine()->getManager();
         $form = $this->get('form.factory')->create();
         $form->handleRequest($request);
-        if ($request->isMethod('POST')) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em->remove($reportAbus);
             $em->flush();
             $request->getSession()->getFlashBag()->add('success', "Le signalement a bien été supprimé.");
@@ -335,7 +327,7 @@ class BlogAdminController extends Controller
         $em = $this->getDoctrine()->getManager();
         $form = $this->get('form.factory')->create();
         $form->handleRequest($request);
-        if ($request->isMethod('POST')) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $reportAbus->setNewReport(false);
             $em->flush();
             $request->getSession()->getFlashBag()->add('success', "Le signalement a bien été archivé.");
@@ -359,7 +351,7 @@ class BlogAdminController extends Controller
         $em = $this->getDoctrine()->getManager();
         $form = $this->get('form.factory')->create();
         $form->handleRequest($request);
-        if ($request->isMethod('POST')) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $reportAbus->setNewReport(true);
             $em->flush();
             $request->getSession()->getFlashBag()->add('success', "Le signalement a bien été réactivé.");
@@ -382,7 +374,6 @@ class BlogAdminController extends Controller
         $em = $this->getDoctrine()->getManager();
         // Récuperation de la configuration
         $config = $this->container->get('blog_general.toolsbox')->loadConfig();
-
         $form = $this->get('form.factory')->create(ConfigurationType::class, $config);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

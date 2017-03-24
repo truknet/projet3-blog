@@ -1,13 +1,14 @@
 {% extends "BlogGeneralBundle::layoutAdmin.html.twig" %}
 {% block title %}Valider un commentaire{% endblock %}
 {% block body %}
-        <h2>Valider un commentaire</h2>
-        <p>
-            Etes-vous certain de vouloir valider le commentaire "{{ comment.title }}" ?
-        </p>
-        <form action="{{ path('admin_valid_comment', {'id': comment.id}) }}" method="post">
-            <a href="{{ path('admin_view_article', {'id': comment.article.id}) }}" class="btn btn-default">Retour à l'article</a>
-            <a href="{{ path('admin_view_list_all_article', {'page': 1}) }}" class="btn btn-default">Retour à liste</a>
-            <input type="submit" value="Valider" class="btn btn-danger" />
-        </form>
+    <h2>Valider un commentaire</h2>
+    <p>
+        Etes-vous certain de vouloir valider le commentaire "{{ comment.title }}" ?
+    </p>
+
+    {{ form_start(form) }}
+        <a href="{{ path('admin_view_article', {'id': comment.article.id}) }}" class="btn btn-default">Retour à l'article</a>
+        <a href="{{ path('admin_view_list_all_article', {'page': 1}) }}" class="btn btn-default">Retour à liste</a>
+        <input type="submit" value="Valider" class="btn btn-danger" />
+    {{ form_end(form) }}
 {% endblock %}

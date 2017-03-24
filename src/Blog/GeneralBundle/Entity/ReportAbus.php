@@ -13,6 +13,15 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ReportAbus
 {
+
+    /**
+     * @var
+     * @ORM\ManyToOne(targetEntity="Blog\GeneralBundle\Entity\Comment", inversedBy="reportsAbus")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $comment;
+
+
     /**
      * @var int
      *
@@ -23,16 +32,9 @@ class ReportAbus
     private $id;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="IdComment", type="integer")
-     */
-    private $idComment;
-
-    /**
      * @var \DateTime
      *
-     * @ORM\Column(name="Date", type="datetime")
+     * @ORM\Column(name="date", type="datetime")
      * @Assert\DateTime()
      */
     private $date;
@@ -67,7 +69,7 @@ class ReportAbus
      *
      * @ORM\Column(name="new_report", type="boolean")
      */
-    private $newReport;
+    private $newReport = true;
 
 
     public function __construct() {
@@ -83,30 +85,6 @@ class ReportAbus
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set idComment
-     *
-     * @param integer $idComment
-     *
-     * @return ReportAbus
-     */
-    public function setIdComment($idComment)
-    {
-        $this->idComment = $idComment;
-
-        return $this;
-    }
-
-    /**
-     * Get idComment
-     *
-     * @return int
-     */
-    public function getIdComment()
-    {
-        return $this->idComment;
     }
 
     /**
@@ -227,5 +205,29 @@ class ReportAbus
     public function getNewReport()
     {
         return $this->newReport;
+    }
+
+    /**
+     * Set comment
+     *
+     * @param \Blog\GeneralBundle\Entity\Comment $comment
+     *
+     * @return ReportAbus
+     */
+    public function setComment(\Blog\GeneralBundle\Entity\Comment $comment)
+    {
+        $this->comment = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Get comment
+     *
+     * @return \Blog\GeneralBundle\Entity\Comment
+     */
+    public function getComment()
+    {
+        return $this->comment;
     }
 }

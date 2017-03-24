@@ -40,6 +40,10 @@ class Comment
      */
     private $depth = 0;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Blog\GeneralBundle\Entity\ReportAbus", mappedBy="comment", cascade={"remove"})
+     */
+    private $reportsAbus;
 
     public function __construct() {
         $this->children = new ArrayCollection();

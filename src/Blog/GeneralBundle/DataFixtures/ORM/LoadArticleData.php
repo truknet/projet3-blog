@@ -3,6 +3,7 @@ namespace Blog\GeneralBundle\DataFixtures\ORM;
 
 use Blog\GeneralBundle\Entity\Article;
 use Blog\GeneralBundle\Entity\Comment;
+use Blog\GeneralBundle\Entity\ReportAbus;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -12,7 +13,7 @@ class LoadArticleData extends AbstractFixture implements OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        for ($i=0; $i<25; $i++) {
+        for ($i=0; $i<10; $i++) {
 
             $article = new Article();
             $article->setTitle('Mon premier article.');
@@ -36,6 +37,14 @@ class LoadArticleData extends AbstractFixture implements OrderedFixtureInterface
             $comment2->setDatecreate(new \DateTime("now"));
             $comment2->setPublished(true);
             $comment2->setDepth(0);
+
+            $report = new ReportAbus();
+            $report->setName('Nom auteur');
+            $report->setEmail('Email Auteur');
+            $report->setMessage('Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l\'imprimerie depuis les années 1500, quand un peintre anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte. ');
+            $report->setComment($comment2);
+            $manager->persist($report);
+
 
             $comment3 = new Comment();
             $comment3->setTitle('Mon premier sous commentaire niveau 2.');

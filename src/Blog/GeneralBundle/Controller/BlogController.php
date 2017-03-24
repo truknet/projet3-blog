@@ -12,6 +12,7 @@ use Blog\GeneralBundle\Form\CommentType;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 class BlogController extends Controller
 {
     /**
@@ -30,14 +31,7 @@ class BlogController extends Controller
      */
     public function commentReplyAction(Comment $comment, Request $request)
     {
-        // Récuperation de la configuration
-        $config = $this->container->get('blog_general.toolsbox')->loadConfig();
-        // Récuperation de la liste pour la sidebar "Articles récents"
-        $listArticlesForSidebar = $this->container->get('blog_general.toolsbox')->lastArticles();
-        // initialisation formulaire commentaire
-        $commentChild = new Comment();
-        $commentChild->setParent($comment);
-        $commentChild->setPublished($config->getCommentAutoPublished());
+        $commentChild = $this->container->get('blog_general.toolsbox')->managerComment($comment);
         $form = $this->get('form.factory')->create(CommentType::class, $commentChild, array('action' => $this->generateUrl('comment_reply', array('comment' => $comment->getId()))));
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -50,7 +44,6 @@ class BlogController extends Controller
         return $this->render('BlogGeneralBundle:Blog:commentReply.html.twig', array(
             'comment' => $comment,
             'form' => $form->createView(),
-            'listArticlesForSidebar' => $listArticlesForSidebar
         ));
     }
 
@@ -63,14 +56,9 @@ class BlogController extends Controller
      */
     public function viewArticleAction(Article $article, Request $request)
     {
-        // Récuperation de la configuration
-        $config = $this->container->get('blog_general.toolsbox')->loadConfig();
-        // Récuperation de la liste pour la sidebar "Articles récents"
-        $listArticlesForSidebar = $this->container->get('blog_general.toolsbox')->lastArticles();
         $em = $this->getDoctrine()->getManager();
-        $comment = new Comment();
-        $comment->setPublished($config->getCommentAutoPublished());
-        $comments = $em->getRepository("BlogGeneralBundle:Comment")->findBy(array("parent" => null, "article" => $article));
+        $comment = $this->container->get('blog_general.toolsbox')->managerComment();
+        $comments = $em->getRepository("BlogGeneralBundle:Comment")->getCommentLevelOne($article);
         $form = $this->get('form.factory')->create(CommentType::class, $comment);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -84,7 +72,6 @@ class BlogController extends Controller
             'article' => $article,
             'comments' => $comments,
             'form' => $form->createView(),
-            'listArticlesForSidebar' => $listArticlesForSidebar
         ));
     }
 
@@ -99,19 +86,14 @@ class BlogController extends Controller
         $em = $this->getDoctrine()->getManager();
         // Récuperation de la configuration
         $config = $this->container->get('blog_general.toolsbox')->loadConfig();
-        // Récuperation de la liste pour la sidebar "Articles récents"
-        $listArticlesForSidebar = $this->container->get('blog_general.toolsbox')->lastArticles();
-        $queryBuilder = $em->getRepository('BlogGeneralBundle:Article')->createQueryBuilder('article');
-        $query = $queryBuilder->getQuery();
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
-            $query, /* query NOT result */
+            $em->getRepository('BlogGeneralBundle:Article')->getAllArticle(), /* query NOT result */
             $page/*page number*/,
             $config->getNbArticlePerPageBlog()/*limit per page*/
         );
         return $this->render('BlogGeneralBundle:Blog:viewAllArticle.html.twig', array(
             'pagination' => $pagination,
-            'listArticlesForSidebar' => $listArticlesForSidebar
         ));
     }
 
@@ -125,19 +107,14 @@ class BlogController extends Controller
         $em = $this->getDoctrine()->getManager();
         // Récuperation de la configuration
         $config = $this->container->get('blog_general.toolsbox')->loadConfig();
-        // Récuperation de la liste pour la sidebar "Articles récents"
-        $listArticlesForSidebar = $this->container->get('blog_general.toolsbox')->lastArticles();
-        $queryBuilder = $em->getRepository('BlogGeneralBundle:Article')->createQueryBuilder('article');
-        $query = $queryBuilder->getQuery();
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
-            $query, /* query NOT result */
+            $em->getRepository('BlogGeneralBundle:Article')->getAllArticle(), /* query NOT result */
             $page/*page number*/,
             $config->getNbArticlePerPageInListBlog()/*limit per page*/
         );
         return $this->render('BlogGeneralBundle:Blog:viewListAllArticle.html.twig', array(
             'pagination' => $pagination,
-            'listArticlesForSidebar' => $listArticlesForSidebar
         ));
     }
 
@@ -150,9 +127,7 @@ class BlogController extends Controller
     public function reportAbusAction(Comment $comment, Request $request)
     {
         $reportAbus = new ReportAbus();
-        $reportAbus->setIdComment($comment->getId());
-        $reportAbus->setDate(new \DateTime());
-        $reportAbus->setNewReport(true);
+        $reportAbus->setComment($comment);
         $form = $this->get('form.factory')->create(ReportAbusType::class, $reportAbus,
             array('action' => $this->generateUrl('report_abus', array('comment' => $comment->getId()))));
         $form->handleRequest($request);
@@ -172,4 +147,17 @@ class BlogController extends Controller
             'form' => $form->createView(),
         ));
     }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/sidebarlistarticle") name="side_bar_list_article")
+     */
+    public function sideBarListArticleAction()
+    {
+        $listArticlesForSidebar = $this->container->get('blog_general.toolsbox')->lastArticles();
+        return $this->render('BlogGeneralBundle:Blog:sideBarListArticle.html.twig', array(
+            'listArticlesForSidebar' => $listArticlesForSidebar,
+        ));
+    }
+
 }

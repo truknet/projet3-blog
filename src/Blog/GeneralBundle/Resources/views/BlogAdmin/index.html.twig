@@ -41,20 +41,20 @@
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title">Signalement N°{{ newReport.id }} pour le commentaire :
-                        {% if newReportComment[newReport.id] == null %}
+                        {% if newReport.comment.id == null %}
                         <span class="text-danger">Le commentaire n'existe pas !</span>
                         {% else %}
-                           {{ newReportComment[newReport.id].title }}</h3>
+                           {{ newReport.comment.title }}</h3>
                         {% endif %}
                 </div>
                 <div class="panel-body">
                     Contenu du commentaire :
-                    {% if newReportComment[newReport.id] == null %}
+                    {% if newReport.comment.id == null %}
                         ....
                     {% else %}
-                        {{ newReportComment[newReport.id].content }}
+                        {{ newReport.comment.content }}
                         <br/>
-                        <a class="boutonedit btn btn-primary btn-xs" href="{{ path('admin_edit_comment', {'id': newReportComment[newReport.id].id}) }}">Editer le commentaire</a>
+                        <a class="boutonedit btn btn-primary btn-xs" href="{{ path('admin_edit_comment', {'id': newReport.comment.id}) }}">Editer le commentaire</a>
                         <br/>
                     {% endif %}
 

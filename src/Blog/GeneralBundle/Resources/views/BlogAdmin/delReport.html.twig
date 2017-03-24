@@ -3,18 +3,12 @@
 {% block title %}Supprimer un signalement{% endblock %}
 
 {% block body %}
-
-
-        <h2>Supprimer un signalement</h2>
-
-        <p>
-            Etes-vous certain de vouloir supprimer le signalement N°{{ reportAbus.id }} ?
-        </p>
-
-        {# On met l'id de l'article dans la route de l'action du formulaire #}
-        <form action="{{ path('admin_del_report', {'id': reportAbus.id}) }}" method="post">
-            <a href="{{ path('admin') }}" class="btn btn-default">Retour au tableau de bord</a>
-            <input type="submit" value="Supprimer" class="btn btn-danger" />
-        </form>
-
+    <h2>Supprimer un signalement</h2>
+    <p>
+        Etes-vous certain de vouloir supprimer le signalement N°{{ reportAbus.id }} ?
+    </p>
+    {{ form_start(form) }}
+        <a href="{{ path('admin') }}" class="btn btn-default">Retour au tableau de bord</a>
+        <input type="submit" value="Supprimer" class="btn btn-danger" />
+    {{ form_end(form) }}
 {% endblock %}

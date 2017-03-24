@@ -4,7 +4,7 @@
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h3 class="panel-title">
-                Signalement N°{{ reportAbus.id }} pour le commentaire : {{ reportComment.title }}
+                Signalement N°{{ reportAbus.id }} pour le commentaire : {{ reportAbus.comment.title }}
                 {% if (reportAbus.newReport == false) %}
                     <button class="boutonedit btn btn-info btn-xs">Etat : Archivé</button>
                 {% else %}
@@ -16,9 +16,9 @@
         <div class="panel-body">
             <b>Contenu du commentaire :</b>
             <br />
-            {{ reportComment.content }}
+            {{ reportAbus.comment.content }}
             <br/>
-            <a class="boutonedit btn btn-primary btn-xs" href="{{ path('admin_edit_comment', {'id': reportAbus.idComment}) }}">Editer le commentaire</a>
+            <a class="boutonedit btn btn-primary btn-xs" href="{{ path('admin_edit_comment', {'id': reportAbus.comment.id}) }}">Editer le commentaire</a>
             <br/>
             <hr>
             <b>Message :</b> {{ reportAbus.message }}

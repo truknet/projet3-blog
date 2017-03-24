@@ -1,47 +1,40 @@
-{% extends "BlogGeneralBundle::layout.html.twig" %}
+{% extends "BlogGeneralBundle::layout1.html.twig" %}
 
 {% block title %}Affiche la liste des articles{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-9 block-main">
 
-                <h1>Affichage de la liste de tous les articles</h1>
-                <div class="count">
-                    <p>Total d'articles : {{ pagination.getTotalItemCount }}</p>
-                </div>
-                <br>
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th{% if pagination.isSorted('article.title') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Title', 'article.title') }}</th>
-                        <th>{{ knp_pagination_sortable(pagination, 'Création', 'article.dateCreate') }}</th>
-                        <th>{{ knp_pagination_sortable(pagination, 'Mise à jour', 'article.dateUpdate') }}</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for article in pagination %}
-                        <tr {% if loop.index is odd %}class="color"{% endif %}>
-                            <td><a href="{{ path('view_article', {'id': article.id}) }}">{{ article.title }}</a></td>
-                            <td>{{ article.dateCreate|date('d/m/Y') }}</td>
-                            <td>{{ article.dateUpdate is empty ? "" : article.dateUpdate|date("d/m/Y") }}</td>
-                            <td>
-                                <a class="btn btn-primary btn-xs boutonedit" href="{{ path('view_article', {'id': article.id}) }}">Lire</a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-                {# display navigation #}
-                <div class="navigation">
-                    {{ knp_pagination_render(pagination) }}
-                </div>
-            </div>
-            <div class="col-sm-3">
-                {{ include("BlogGeneralBundle:Blog:Include-Sidebar-ArticlesRecents.html.twig") }}
-            </div>
-        </div>
+
+    <h1>Affichage de la liste de tous les articles</h1>
+    <div class="count">
+        <p>Total d'articles : {{ pagination.getTotalItemCount }}</p>
     </div>
+    <br>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th{% if pagination.isSorted('article.title') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Title', 'article.title') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Création', 'article.dateCreate') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Mise à jour', 'article.dateUpdate') }}</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for article in pagination %}
+            <tr {% if loop.index is odd %}class="color"{% endif %}>
+                <td><a href="{{ path('view_article', {'id': article.id}) }}">{{ article.title }}</a></td>
+                <td>{{ article.dateCreate|date('d/m/Y') }}</td>
+                <td>{{ article.dateUpdate is empty ? "" : article.dateUpdate|date("d/m/Y") }}</td>
+                <td>
+                    <a class="btn btn-primary btn-xs boutonedit" href="{{ path('view_article', {'id': article.id}) }}">Lire</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {# display navigation #}
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+
 {% endblock %}

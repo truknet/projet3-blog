@@ -5,17 +5,23 @@ namespace Blog\GeneralBundle\ToolsBox;
 
 use Blog\GeneralBundle\Entity\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
-
+use Blog\GeneralBundle\Entity\ReportAbus;
+use Blog\GeneralBundle\Entity\Comment;
 
 class ToolsBox
 {
 
     private $em;
+
     /**
      * @var Configuration
      */
     private $config = null;
 
+    /**
+     * ToolsBox constructor.
+     * @param EntityManagerInterface $em
+     */
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
@@ -54,11 +60,6 @@ class ToolsBox
     public function dashboard() {
         $dashboard['comments'] = $this->em->getRepository('BlogGeneralBundle:Comment')->getCommentNoPublished();
         $dashboard['newReports'] = $this->em->getRepository('BlogGeneralBundle:ReportAbus')->getNewReport();
-        $dashboard['newReportComment'] = null;
-        foreach ($dashboard['newReports'] as $key => $value)
-        {
-            $dashboard['newReportComment'][$value->getId()] = $this->em->getRepository('BlogGeneralBundle:Comment')->findOneBy(array('id' => $value->getIdComment()));
-        }
         if (count($dashboard['newReports']) == 0) {
             $dashboard['message']['signal'] = ['success', 'Aucun signalement de contenu en attente de contrôle.'];
         }
@@ -72,6 +73,18 @@ class ToolsBox
             $dashboard['message']['comment'] = ['warning', count($dashboard['comments']) . ' Commentaire(s) en attente de validation.'];
         }
         return $dashboard;
+    }
+
+    public function managerComment($parent = null)
+    {
+        $comment = new Comment();
+        $comment->setPublished($this->config->getCommentAutoPublished());
+
+        if ($parent !== null)
+        {
+            $comment->setParent($parent);
+        }
+        return $comment;
     }
 
 }

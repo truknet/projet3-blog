@@ -36,7 +36,7 @@
         </div>
         {# Affichage du panel des Articles recents dans la sidebar de droite #}
         <div class="col-sm-3">
-            {{ include("BlogGeneralBundle:Blog:Include-Sidebar-ArticlesRecents.html.twig") }}
+            {{ render(controller('BlogGeneralBundle:Blog:sideBarListArticle')) }}
         </div>
     </div>
 </div>
