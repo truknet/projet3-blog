@@ -18,7 +18,7 @@ class ArticleRepository extends EntityRepository
      */
     public function getAllArticle()
     {
-        $qb = $this->createQueryBuilder('a')->getQuery();
+        $qb = $this->createQueryBuilder('article')->getQuery();
         return $qb;
     }
 
@@ -27,8 +27,8 @@ class ArticleRepository extends EntityRepository
      */
     public function getAllArticleDateCreateDesc()
     {
-        $qb = $this->createQueryBuilder('a');
-        $qb->orderBy('a.dateCreate', 'DESC');
+        $qb = $this->createQueryBuilder('article');
+        $qb->orderBy('article.dateCreate', 'DESC');
         return $qb->getQuery();
     }
 }

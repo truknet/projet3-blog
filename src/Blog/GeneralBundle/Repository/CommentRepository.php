@@ -14,8 +14,8 @@ class CommentRepository extends \Doctrine\ORM\EntityRepository
 {
     public function getAllComment()
     {
-        $qb = $this->createQueryBuilder('a');
-        $qb->orderBy('a.dateCreate', 'DESC');
+        $qb = $this->createQueryBuilder('comment');
+        $qb->orderBy('comment.dateCreate', 'DESC');
         return $qb->getQuery();
     }
 

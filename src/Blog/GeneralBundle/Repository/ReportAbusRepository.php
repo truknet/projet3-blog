@@ -21,8 +21,8 @@ class ReportAbusRepository extends \Doctrine\ORM\EntityRepository
 
     public function getAllReportsDateDesc()
     {
-        $qb = $this->createQueryBuilder('a');
-        $qb->orderBy('a.date', 'DESC');
+        $qb = $this->createQueryBuilder('report_abus');
+        $qb->orderBy('report_abus.date', 'DESC');
         return $qb->getQuery();
     }
 }

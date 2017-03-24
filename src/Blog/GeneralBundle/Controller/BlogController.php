@@ -109,7 +109,7 @@ class BlogController extends Controller
         $config = $this->container->get('blog_general.toolsbox')->loadConfig();
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
-            $em->getRepository('BlogGeneralBundle:Article')->getAllArticle(), /* query NOT result */
+            $em->getRepository('BlogGeneralBundle:Article')->getAllArticleDateCreateDesc(), /* query NOT result */
             $page/*page number*/,
             $config->getNbArticlePerPageInListBlog()/*limit per page*/
         );
