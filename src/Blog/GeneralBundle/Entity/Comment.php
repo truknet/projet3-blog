@@ -45,6 +45,8 @@ class Comment
      */
     private $reportsAbus;
 
+
+
     public function __construct() {
         $this->children = new ArrayCollection();
         $this->dateCreate = new \DateTime();
@@ -376,5 +378,39 @@ class Comment
     public function getDepth()
     {
         return $this->depth;
+    }
+
+    /**
+     * Add reportsAbus
+     *
+     * @param \Blog\GeneralBundle\Entity\ReportAbus $reportsAbus
+     *
+     * @return Comment
+     */
+    public function addReportsAbus(\Blog\GeneralBundle\Entity\ReportAbus $reportsAbus)
+    {
+        $this->reportsAbus[] = $reportsAbus;
+
+        return $this;
+    }
+
+    /**
+     * Remove reportsAbus
+     *
+     * @param \Blog\GeneralBundle\Entity\ReportAbus $reportsAbus
+     */
+    public function removeReportsAbus(\Blog\GeneralBundle\Entity\ReportAbus $reportsAbus)
+    {
+        $this->reportsAbus->removeElement($reportsAbus);
+    }
+
+    /**
+     * Get reportsAbus
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getReportsAbus()
+    {
+        return $this->reportsAbus;
     }
 }
