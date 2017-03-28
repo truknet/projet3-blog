@@ -136,7 +136,7 @@ class BlogController extends Controller
                $em = $this->getDoctrine()->getManager();
                $em->persist($reportAbus);
                $em->flush();
-               $request->getSession()->getFlashBag()->add('info', 'Vous avez signalé un abus avec succèss !');
+               $request->getSession()->getFlashBag()->add('info', 'Vous avez signalé un abus avec succès !');
             } else {
                $request->getSession()->getFlashBag()->add('warning', 'Erreur !');
             }

@@ -79,7 +79,6 @@ class ToolsBox
     {
         $comment = new Comment();
         $comment->setPublished($this->config->getCommentAutoPublished());
-
         if ($parent !== null)
         {
             $comment->setParent($parent);

@@ -2,9 +2,13 @@ body {
     padding-top: 80px;
 }
 h1 {
-    font-size: 24px;
+    font-size: x-large;
     text-align: center;
 }
+h2 {
+    font-size: large;
+}
+
 
 .comment1 {
     padding-left: 50px;
@@ -49,6 +53,14 @@ h1 {
     text-align: center;
 }
 
+
+.msgErreur {
+    text-align: center;
+}
+.msgErreurCode {
+    text-align: center;
+    color: red;
+}
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
