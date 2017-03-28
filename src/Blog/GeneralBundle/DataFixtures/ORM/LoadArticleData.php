@@ -23,7 +23,7 @@ class LoadArticleData extends AbstractFixture implements OrderedFixtureInterface
             $article->setPublished(true);
 
             $comment1 = new Comment();
-            $comment1->setTitle('Commentaire niveau 1 sur l\'article#' . $i);
+            $comment1->setTitle('Commentaire niveau 1 sur l\'article #' . $i);
             $comment1->setContent('Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
             $comment1->setAuthor('Sandrine');
             $comment1->setDatecreate(new \DateTime("now"));
