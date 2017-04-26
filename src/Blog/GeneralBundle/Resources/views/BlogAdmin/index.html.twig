@@ -21,6 +21,7 @@
                         Auteur : {{ comment.author }}
                         - Date de création : {{ comment.dateCreate|date('d/m/Y') }}
                         {{ comment.dateUpdate is empty ? "" : ' - Mise à jour : ' ~ comment.dateUpdate|date("d/m/Y") }}
+                        <a class="btn btn-primary btn-xs boutonedit" href="{{ path('admin_view_article', {'id': comment.article.id}) }}">Lire article </a>
                         <a class="boutonedit btn btn-primary btn-xs" href="{{ path('admin_edit_comment', {'id': comment.id}) }}">Editer </a>
                         <a class="boutondel btn btn-primary btn-xs" href="{{ path('admin_del_comment', {'id': comment.id}) }}">Supprimer </a>
                         <a class="boutonvalid btn btn-primary btn-xs" href="{{ path('admin_valid_comment', {'id': comment.id}) }}">Valider </a>
@@ -53,9 +54,6 @@
                         ....
                     {% else %}
                         {{ newReport.comment.content }}
-                        <br/>
-                        <a class="boutonedit btn btn-primary btn-xs" href="{{ path('admin_edit_comment', {'id': newReport.comment.id}) }}">Editer le commentaire</a>
-                        <br/>
                     {% endif %}
 
                     <hr>
@@ -63,6 +61,8 @@
                     <hr>
                     Auteur : {{ newReport.name }}
                     - Date de création : {{ newReport.date|date('d/m/Y') }}
+                    <a class="boutonedit btn btn-primary btn-xs" href="{{ path('admin_edit_comment', {'id': newReport.comment.id}) }}">Editer le commentaire </a>
+                    <a class="btn btn-primary btn-xs boutonedit" href="{{ path('admin_view_article', {'id': newReport.comment.article.id}) }}">Lire article </a>
                     <a class="boutondel btn btn-primary btn-xs" href="{{ path('admin_del_report', {'id': newReport.id}) }}">Supprimer </a>
                     <a class="boutonvalid btn btn-primary btn-xs" href="{{ path('admin_archive_report', {'id': newReport.id}) }}">Archiver </a>
                 </div>

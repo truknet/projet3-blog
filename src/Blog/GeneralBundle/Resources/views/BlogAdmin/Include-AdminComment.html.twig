@@ -23,6 +23,9 @@
                     {{ comment.dateUpdate is empty ? "" : ' - Mise à jour : ' ~ comment.dateUpdate|date("d/m/Y") }}
                     <a class="boutonedit btn btn-primary btn-xs" href="{{ path('admin_edit_comment', {'id': comment.id}) }}">Editer </a>
                     <a class="boutondel btn btn-primary btn-xs" href="{{ path('admin_del_comment', {'id': comment.id}) }}">Supprimer </a>
+                    {% if comment.published == false %}
+                        <a class="boutonvalid btn btn-primary btn-xs" href="{{ path('admin_valid_comment', {'id': comment.id}) }}">Valider</a>
+                    {% endif %}
                 </div>
             </div>
             <div>

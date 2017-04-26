@@ -3,7 +3,14 @@
 {% block body %}
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <h3 class="panel-title">{{ comment.title }}</h3>
+            <h3 class="panel-title">
+                {{ comment.title }}
+                {% if comment.published == false %}
+                    <a class="boutonvalid btn btn-warning btn-xs" href="{{ path('admin_valid_comment', {'id': comment.id}) }}">En attente de validation</a>
+                {% else %}
+                    <button class="boutonvalid btn btn-success btn-xs">Validé</button>
+                {% endif %}
+            </h3>
         </div>
         <div class="panel-body">
             {{ comment.content }}
@@ -13,6 +20,9 @@
             {{ comment.dateUpdate is empty ? "" : ' - Mise à jour : ' ~ comment.dateUpdate|date("d/m/Y") }}
             <a class="boutonedit btn btn-primary btn-xs" href="{{ path('admin_edit_comment', {'id': comment.id}) }}">Editer </a>
             <a class="boutondel btn btn-primary btn-xs" href="{{ path('admin_del_comment', {'id': comment.id}) }}">Supprimer </a>
+            {% if comment.published == false %}
+                <a class="boutonvalid btn btn-primary btn-xs" href="{{ path('admin_valid_comment', {'id': comment.id}) }}">Valider</a>
+            {% endif %}
         </div>
     </div>
     <a href="{{ path('admin_view_list_all_comment', {'page': 1}) }}" class="btn btn-default">Retour à liste</a>
